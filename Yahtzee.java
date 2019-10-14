@@ -3,7 +3,7 @@ package com.dominiccobo.cs3004.assignment;
 import java.util.*;
 public class Yahtzee {
 
-    private static int showCurrentScore(int[][] currentScoreRecord) {
+    private static int showCurrentScore(RoundResult[] currentScoreRecord) {
         //Scoring Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
 
         int score = 0;
@@ -11,22 +11,23 @@ public class Yahtzee {
 
         //Calculate current score
         for (int i=0; i<currentScoreRecord.length; i++) {
-            score = score + currentScoreRecord[i][1];
+            score = score + currentScoreRecord[i].asLegacyArray()[1];
         }//endfor
         //Show what's been scored
         for (int i=0; i<13; i++) {
-            System.out.println(options[i] + " scoring " + currentScoreRecord[i][1] + " points");
+            System.out.println(options[i] + " scoring " + currentScoreRecord[i].asLegacyArray()[1] + " points");
         }
         return score;
 
     }
 
 
-    private static int[][] whatCanBeScored(int[][] currentScoreRecord, int[] theDice) {
+    private static RoundResult[] whatCanBeScored(RoundResult[] currentScoreRecord, int[] theDice) {
         //Scoring Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
         //Updates canScoreThisRound
 
-        int[][] canScoreThisRound = new int[13][2];
+        RoundResult[] canScoreThisRound = new RoundResult[13];
+        Arrays.fill(canScoreThisRound, new RoundResult());
         int count = 0;
         int score = 0;
         boolean found4K = false;
@@ -38,7 +39,7 @@ public class Yahtzee {
         //Check first if the number has been scored
         //If there is a score possible then note it
 
-        if (currentScoreRecord[0][0] == 0) {
+        if (currentScoreRecord[0].asLegacyArray()[0] == 0) {
             //CHECK FOR YAHTZEE
             count = 0;
             for (int i = 0; i < theDice.length; i++){
@@ -47,13 +48,13 @@ public class Yahtzee {
                 }
             }
             if(count == 0){
-                canScoreThisRound[0][0] = 1;
-                canScoreThisRound[0][1] = 50;
+                canScoreThisRound[0].asLegacyArray()[0] = 1;
+                canScoreThisRound[0].asLegacyArray()[1] = 50;
 //	            System.out.println("Can score a Yahtzee for 50");
             }
         }//Y
 
-        if (currentScoreRecord[1][0] == 0) {
+        if (currentScoreRecord[1].asLegacyArray()[0] == 0) {
             //CHECK FULL HOUSE
             count = 0;
             //Check it's not a Y
@@ -82,8 +83,8 @@ public class Yahtzee {
                 }
 
                 if (count == 0) {
-                    canScoreThisRound[1][0] = 1;
-                    canScoreThisRound[1][1] = 25;
+                    canScoreThisRound[1].asLegacyArray()[0] = 1;
+                    canScoreThisRound[1].asLegacyArray()[1] = 25;
                 } else {
                     count = 0;
                     //Check first three the same then check last two
@@ -101,8 +102,8 @@ public class Yahtzee {
                     }
 
                     if (count == 0) {
-                        canScoreThisRound[1][0] = 1;
-                        canScoreThisRound[1][1] = 25;
+                        canScoreThisRound[1].asLegacyArray()[0] = 1;
+                        canScoreThisRound[1].asLegacyArray()[1] = 25;
                     }
 
                 } //end if
@@ -112,35 +113,35 @@ public class Yahtzee {
             }
         }//FH
 
-        if (currentScoreRecord[2][0] == 0) {
+        if (currentScoreRecord[2].asLegacyArray()[0] == 0) {
             //CHECK LONG STRAIGHT
 
             //Check for Straight D1-5
             if ((theDice[0] == theDice[1] - 1) && (theDice[1] == theDice[2] - 1) && (theDice[2] == theDice[3] - 1) && (theDice[3] == theDice[4] - 1)){
-                canScoreThisRound[2][0] = 1;
-                canScoreThisRound[2][1] = 40;
+                canScoreThisRound[2].asLegacyArray()[0] = 1;
+                canScoreThisRound[2].asLegacyArray()[1] = 40;
 //	            System.out.println("Can score a LS for 40");
             }
         }//LS
 
-        if (currentScoreRecord[3][0] == 0) {
+        if (currentScoreRecord[3].asLegacyArray()[0] == 0) {
             //CHECK SHORT STRAIGHT
 
             //Check for Short Straight D1-4, D2-5
             if ((theDice[0] == theDice[1] - 1) && (theDice[1] == theDice[2] - 1) && (theDice[2] == theDice[3] - 1)){
-                canScoreThisRound[3][0] = 1;
-                canScoreThisRound[3][1] = 30;
+                canScoreThisRound[3].asLegacyArray()[0] = 1;
+                canScoreThisRound[3].asLegacyArray()[1] = 30;
 //	            System.out.println("Can score a SS for 30");
             }
             if ((theDice[1] == theDice[2] - 1) && (theDice[2] == theDice[3] - 1) && (theDice[3] == theDice[4] - 1)){
-                canScoreThisRound[3][0] = 1;
-                canScoreThisRound[3][1] = 30;
+                canScoreThisRound[3].asLegacyArray()[0] = 1;
+                canScoreThisRound[3].asLegacyArray()[1] = 30;
 //	            System.out.println("Can score a SS for 30");
             }
         }//SS
 
 
-        if (currentScoreRecord[4][0] == 0) {
+        if (currentScoreRecord[4].asLegacyArray()[0] == 0) {
             //CHECK FOR 4 OF A KIND
             count = 0;
             found4K = false;
@@ -175,13 +176,13 @@ public class Yahtzee {
                 for (int i = 0; i < theDice.length; i++){
                     score = score + theDice[i];
                 }
-                canScoreThisRound[4][0] = 1;
-                canScoreThisRound[4][1] = score;
+                canScoreThisRound[4].asLegacyArray()[0] = 1;
+                canScoreThisRound[4].asLegacyArray()[1] = score;
             }
 
         }//4K
 
-        if (currentScoreRecord[5][0] == 0) {
+        if (currentScoreRecord[5].asLegacyArray()[0] == 0) {
             //CHECK FOR 3 OF A KIND
             count = 0;
             found3K = false;
@@ -228,13 +229,13 @@ public class Yahtzee {
                 for (int i = 0; i < theDice.length; i++){
                     score = score + theDice[i];
                 }
-                canScoreThisRound[5][0] = 1;
-                canScoreThisRound[5][1] = score;
+                canScoreThisRound[5].asLegacyArray()[0] = 1;
+                canScoreThisRound[5].asLegacyArray()[1] = score;
             }
 
         }//3K
 
-        if (currentScoreRecord[6][0] == 0) {
+        if (currentScoreRecord[6].asLegacyArray()[0] == 0) {
             //Check 1s
             ones = 0;
             for (int i = 0; i < theDice.length; i++){
@@ -242,11 +243,11 @@ public class Yahtzee {
                     ones = ones + 1;
                 }
             }
-            canScoreThisRound[6][0] = 1;
-            canScoreThisRound[6][1] = ones;
+            canScoreThisRound[6].asLegacyArray()[0] = 1;
+            canScoreThisRound[6].asLegacyArray()[1] = ones;
         }
 
-        if (currentScoreRecord[7][0] == 0) {
+        if (currentScoreRecord[7].asLegacyArray()[0] == 0) {
             //Check 2s
             twos = 0;
             for (int i = 0; i < theDice.length; i++){
@@ -254,11 +255,11 @@ public class Yahtzee {
                     twos = twos + 2;
                 }
             }
-            canScoreThisRound[7][0] = 1;
-            canScoreThisRound[7][1] = twos;
+            canScoreThisRound[7].asLegacyArray()[0] = 1;
+            canScoreThisRound[7].asLegacyArray()[1] = twos;
         }
 
-        if (currentScoreRecord[8][0] == 0) {
+        if (currentScoreRecord[8].asLegacyArray()[0] == 0) {
             //Check 3s
             threes = 0;
             for (int i = 0; i < theDice.length; i++){
@@ -266,11 +267,11 @@ public class Yahtzee {
                     threes = threes + 3;
                 }
             }
-            canScoreThisRound[8][0] = 1;
-            canScoreThisRound[8][1] = threes;
+            canScoreThisRound[8].asLegacyArray()[0] = 1;
+            canScoreThisRound[8].asLegacyArray()[1] = threes;
         }
 
-        if (currentScoreRecord[9][0] == 0) {
+        if (currentScoreRecord[9].asLegacyArray()[0] == 0) {
             //Check 4s
             fours = 0;
             for (int i = 0; i < theDice.length; i++){
@@ -278,11 +279,11 @@ public class Yahtzee {
                     fours = fours + 4;
                 }
             }
-            canScoreThisRound[9][0] = 1;
-            canScoreThisRound[9][1] = fours;
+            canScoreThisRound[9].asLegacyArray()[0] = 1;
+            canScoreThisRound[9].asLegacyArray()[1] = fours;
         }
 
-        if (currentScoreRecord[10][0] == 0) {
+        if (currentScoreRecord[10].asLegacyArray()[0] == 0) {
             //Check 5s
             fives = 0;
             for (int i = 0; i < theDice.length; i++){
@@ -290,11 +291,11 @@ public class Yahtzee {
                     fives = fives + 5;
                 }
             }
-            canScoreThisRound[10][0] = 1;
-            canScoreThisRound[10][1] = fives;
+            canScoreThisRound[10].asLegacyArray()[0] = 1;
+            canScoreThisRound[10].asLegacyArray()[1] = fives;
         }
 
-        if (currentScoreRecord[11][0] == 0) {
+        if (currentScoreRecord[11].asLegacyArray()[0] == 0) {
             //Check 6s
             sixes = 0;
             for (int i = 0; i < theDice.length; i++){
@@ -302,16 +303,16 @@ public class Yahtzee {
                     sixes = sixes + 6;
                 }
             }
-            canScoreThisRound[11][0] = 1;
-            canScoreThisRound[11][1] = sixes;
+            canScoreThisRound[11].asLegacyArray()[0] = 1;
+            canScoreThisRound[11].asLegacyArray()[1] = sixes;
         }
 
-        if (currentScoreRecord[12][0] == 0) {
+        if (currentScoreRecord[12].asLegacyArray()[0] == 0) {
             //Check chance
-            canScoreThisRound[12][0] = 1;
-            canScoreThisRound[12][1] = 0;
+            canScoreThisRound[12].asLegacyArray()[0] = 1;
+            canScoreThisRound[12].asLegacyArray()[1] = 0;
             for (int i = 0; i < theDice.length; i++){
-                canScoreThisRound[12][1] = canScoreThisRound[12][1] + theDice[i];
+                canScoreThisRound[12].asLegacyArray()[1] = canScoreThisRound[12].asLegacyArray()[1] + theDice[i];
             }
         }
 
@@ -319,11 +320,11 @@ public class Yahtzee {
     }//whatCanBeScored
 
 
-    private static int[][] chooseWhatToScore(int[][] currentScoreRecord, int [][]canScoreThisRound){
+    private static RoundResult[] chooseWhatToScore(RoundResult[] currentScoreRecord, RoundResult[] canScoreThisRound){
         //Scoring Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
 
-        int[][] newScoreRecord = new int[13][2];
-        int[][] potentialChoice = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+        RoundResult[] newScoreRecord = new RoundResult[13];
+        RoundResult[] potentialChoice = new RoundResult[13];
         String[] options = {"Yahtzee", "Full-House", "Long-Straight", "Short-Straight", "Quad", "Triple", "Ones", "Twos", "Threes", "Fours", "Fives", "Sixes", "Chance"};
         int choice = 0;
 
@@ -335,22 +336,31 @@ public class Yahtzee {
         System.out.println("With your roll you can select...");
         //Present choices - check if it has been scored and if it can be scored
         for (int i=0; i<13; i++) {
-            if ((currentScoreRecord[i][0] == 0) && (canScoreThisRound[i][0] == 1)){
-                potentialChoice[i][0] = 1;
-                potentialChoice[i][1] = canScoreThisRound[i][1];
-                System.out.println("Select " + i + " for " + options[i] + " scoring " + canScoreThisRound[i][1] + " points");
+            if ((currentScoreRecord[i].asLegacyArray()[0] == 0) && (canScoreThisRound[i].asLegacyArray()[0] == 1)){
+                potentialChoice[i].asLegacyArray()[0] = 1;
+                potentialChoice[i].asLegacyArray()[1] = canScoreThisRound[i].asLegacyArray()[1];
+                System.out.println("Select " + i + " for " + options[i] + " scoring " + canScoreThisRound[i].asLegacyArray()[1] + " points");
             }
         }
 
         //Choose and update score
         choice = InputUtils.readIntegerConsoleInput("Choose one choice!");
         System.out.println("You have chosen " + options[choice]);
-        newScoreRecord[choice][0] = 1;
-        newScoreRecord[choice][1] = canScoreThisRound[choice][1];
+        newScoreRecord[choice].asLegacyArray()[0] = 1;
+        newScoreRecord[choice].asLegacyArray()[1] = canScoreThisRound[choice].asLegacyArray()[1];
 
         return newScoreRecord;
     }//chooseWhatToScore
 
+    static class RoundResult {
+        int status = 0;
+        int score = 0;
+
+        // temporary strangler method
+        int[] asLegacyArray() {
+            return new int[] {status, score};
+        }
+    }
 
     //Let's play...
 
@@ -376,12 +386,14 @@ public class Yahtzee {
 				End of 13 rounds show final score and status
 	    */
 
-
-        int[][] currentScoreRecord = new int[][] {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-        int[][] canScoreThisRound = new int[][] {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-        int currentScore = 0;
-
         final int NUMBER_OF_DICE = 5;
+        final int NUMBER_OF_ROUNDS = 13;
+
+        RoundResult[] currentScoreRecord = new RoundResult[NUMBER_OF_ROUNDS];
+        Arrays.fill(currentScoreRecord, new RoundResult());
+        RoundResult[] canScoreThisRound = new RoundResult[NUMBER_OF_ROUNDS];
+        Arrays.fill(canScoreThisRound, new RoundResult());
+        int currentScore = 0;
 
         int[] theDice = new int[NUMBER_OF_DICE];// dice scores
         int noRolls = 0;
