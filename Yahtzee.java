@@ -3,43 +3,6 @@ package com.dominiccobo.cs3004.assignment;
 import java.util.*;
 public class Yahtzee {
 
-    //Read an integer
-    public static int inputInt(String Prompt) {
-        int result = 0;
-        try {
-            result = Integer.parseInt(input(Prompt).trim());
-        } catch (Exception e) {
-            result = 0;
-        }
-        return result;
-    }//inputInt
-
-    //Set up the input
-    public static String input(String prompt) {
-        String inputLine = "";
-        System.out.print(prompt);
-        try {
-            java.io.InputStreamReader sys = new java.io.InputStreamReader(
-                    System.in);
-            java.io.BufferedReader inBuffer = new java.io.BufferedReader(sys);
-            inputLine = inBuffer.readLine();
-        } catch (Exception e) {
-            String err = e.toString();
-            System.out.println(err);
-        }
-        return inputLine;
-    }//input
-
-    //Six sided die roller
-    private static int die() {
-        Random r = new Random();
-        return r.nextInt(6)+1;
-    }
-
-    private static void showDice(int[] theseDice) {
-        System.out.println("You rolled: " + theseDice[0] + " " + theseDice[1] + " "+ theseDice[2] + " "+ theseDice[3] + " " + theseDice[4]);
-    }//showDice
-
     private static int showCurrentScore(int[][] currentScoreRecord) {
         //Scoring Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
 
@@ -56,7 +19,7 @@ public class Yahtzee {
         }
         return score;
 
-    }//showCurrentScore
+    }
 
 
     private static int[][] whatCanBeScored(int[][] currentScoreRecord, int[] theDice) {
@@ -380,7 +343,7 @@ public class Yahtzee {
         }
 
         //Choose and update score
-        choice = inputInt("Choose one choice!");
+        choice = InputUtils.readIntegerConsoleInput("Choose one choice!");
         System.out.println("You have chosen " + options[choice]);
         newScoreRecord[choice][0] = 1;
         newScoreRecord[choice][1] = canScoreThisRound[choice][1];
@@ -418,7 +381,9 @@ public class Yahtzee {
         int[][] canScoreThisRound = new int[][] {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
         int currentScore = 0;
 
-        int[] theDice = new int[] {0, 0, 0, 0, 0 };// dice scores
+        final int NUMBER_OF_DICE = 5;
+
+        int[] theDice = new int[NUMBER_OF_DICE];// dice scores
         int noRolls = 0;
         int temp = 0;
         boolean reroll = true;
@@ -437,12 +402,8 @@ public class Yahtzee {
             currentScore = showCurrentScore(currentScoreRecord);
 
             //Roll the dice
-            for (int i = 0; i < 5; i++) {
-                theDice[i] = die();// sets the dice values
-            }
-
-            //See what we have rolled
-            showDice(theDice);
+            theDice = Dice.roll(NUMBER_OF_DICE);
+            Dice.printDice(theDice);
 
             //Check rerolls - three dice to reroll
             System.out.println("Three chances to reroll");
@@ -452,16 +413,16 @@ public class Yahtzee {
             while (reroll){
                 noRolls++;
                 if (rerollDie > 0) {
-                    rerollDie = inputInt("How many dice do you want to reroll? (1-5 - 0 for no dice)");
+                    rerollDie = InputUtils.readIntegerConsoleInput("How many dice do you want to reroll? (1-5 - 0 for no dice)");
                     if (rerollDie > 0) {
                         for (int i=0; i<rerollDie;i++) {
-                            temp = inputInt("Select a die (1-5)");
+                            temp = InputUtils.readIntegerConsoleInput("Select a die (1-5)");
                             rerollDice[i] = temp - 1; //adjust for array index
                         }
                         for (int i=0; i<rerollDie;i++) {
-                            theDice[rerollDice[i]] = die();
+                            theDice[rerollDice[i]] = Dice.roll();
                         }
-                        showDice(theDice);
+                        Dice.printDice(theDice);
                     }
                 }else {
                     reroll = false;
