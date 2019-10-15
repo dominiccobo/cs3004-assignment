@@ -17,6 +17,9 @@ public class Yahtzee {
     public static final int FIVES_SCORE_IDX = 10;
     public static final int SIX_SCORE_IDX = 11;
     public static final int CHANCE_SCORE_IDX = 12;
+    public static final int NUMBER_OF_DICE = 5;
+    public static final int NUMBER_OF_SCORING_OPTIONS = 13;
+    public static final int NUMBER_OF_ROUNDS = 13;
 
     private static int showCurrentScore(RoundResult[] currentScoreRecord) {
         int score = 0;
@@ -28,7 +31,7 @@ public class Yahtzee {
     }
 
     public static RoundResult[] whatCanBeScored(RoundResult[] currentScoreRecord, int[] theDice) {
-        RoundResult[] canScoreThisRound = new RoundResult[13];
+        RoundResult[] canScoreThisRound = new RoundResult[NUMBER_OF_SCORING_OPTIONS];
 //        Arrays.sort(theDice);
 
         canScoreThisRound[YAHZEE_SCORE_IDX] = checkForYahtzee(currentScoreRecord, theDice);
@@ -341,9 +344,9 @@ public class Yahtzee {
     private static RoundResult[] chooseWhatToScore(RoundResult[] currentScoreRecord, RoundResult[] canScoreThisRound){
         //Scoring Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
 
-        RoundResult[] newScoreRecord = new RoundResult[13];
+        RoundResult[] newScoreRecord = new RoundResult[NUMBER_OF_SCORING_OPTIONS];
         Arrays.fill(newScoreRecord, new RoundResult());
-        RoundResult[] potentialChoice = new RoundResult[13];
+        RoundResult[] potentialChoice = new RoundResult[NUMBER_OF_SCORING_OPTIONS];
         Arrays.fill(potentialChoice, new RoundResult());
         int choice = 0;
 
@@ -354,7 +357,7 @@ public class Yahtzee {
         newScoreRecord = currentScoreRecord;
         System.out.println("With your roll you can select...");
         //Present choices - check if it has been scored and if it can be scored
-        for (int i=0; i<13; i++) {
+        for (int i = 0; i < NUMBER_OF_SCORING_OPTIONS; i++) {
             if ((currentScoreRecord[i].status == 0) && (canScoreThisRound[i].status == 1)){
                 potentialChoice[i].status = 1;
                 potentialChoice[i].score = canScoreThisRound[i].score;
@@ -439,13 +442,9 @@ public class Yahtzee {
 				End of 13 rounds show final score and status
 	    */
 
-        final int NUMBER_OF_DICE = 5;
-        final int NUMBER_OF_POSSIBLE_SCORES = 13;
-        final int NUMBER_OF_ROUNDS = 13;
-
-        RoundResult[] currentScoreRecord = new RoundResult[NUMBER_OF_POSSIBLE_SCORES];
+        RoundResult[] currentScoreRecord = new RoundResult[NUMBER_OF_SCORING_OPTIONS];
         Arrays.fill(currentScoreRecord, new RoundResult());
-        RoundResult[] canScoreThisRound = new RoundResult[NUMBER_OF_POSSIBLE_SCORES];
+        RoundResult[] canScoreThisRound = new RoundResult[NUMBER_OF_SCORING_OPTIONS];
         Arrays.fill(canScoreThisRound, new RoundResult());
         int currentScore = 0;
 
