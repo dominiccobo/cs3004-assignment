@@ -20,6 +20,7 @@ public class Yahtzee {
     public static final int NUMBER_OF_DICE = 5;
     public static final int NUMBER_OF_SCORING_OPTIONS = 13;
     public static final int NUMBER_OF_ROUNDS = 13;
+    public static final int MAX_ALLOWED_REROLLS = 3;
 
     private static int showCurrentScore(RoundResult[] currentScoreRecord) {
         int score = 0;
@@ -332,8 +333,8 @@ public class Yahtzee {
     private static int countDifferentDices(int[] theDice) {
         int count = 0;
         // horrible way of checking for 5 of a kind
-        for (int i = 0; i < theDice.length; i++){
-            if(theDice[0] != theDice[i]){
+        for (int value : theDice) {
+            if (theDice[0] != value) {
                 count++;
             }
         }
@@ -420,27 +421,27 @@ public class Yahtzee {
 
     //Let's play...
 
-    public static void main(String[] args) {
-	    /*
-	    Welcome to Yahtzee - Simon Taylor Sept 2019
-		Scoring - Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
+    public static void playGame() {
+    /*
+    Welcome to Yahtzee - Simon Taylor Sept 2019
+    Scoring - Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
 
-		currentScoreRecord - For each of the above {status, score}
-		canScoreThisRound - For each of the above  {can it be scored? i.e. can be scored and not previously scored, score}
-		theDice - {what's been rolled this turn}
-		currentScore - current score
+    currentScoreRecord - For each of the above {status, score}
+    canScoreThisRound - For each of the above  {can it be scored? i.e. can be scored and not previously scored, score}
+    theDice - {what's been rolled this turn}
+    currentScore - current score
 
-		showCurrentScore - calculate and show the current score from currentScoreRecord
-		whatCanBeScored - update canScoreThisRound from theDice and currentScoreRecord
-		chooseWhatToScore - user chooses from canScoreThisRound and update currentScoreRecord
+    showCurrentScore - calculate and show the current score from currentScoreRecord
+    whatCanBeScored - update canScoreThisRound from theDice and currentScoreRecord
+    chooseWhatToScore - user chooses from canScoreThisRound and update currentScoreRecord
 
-		Game - 	13 rounds
-				Show what's been scored
-				Roll/reroll dice max 3 times
-				Check what can be scored
-				Choose what can be scored
-				End of 13 rounds show final score and status
-	    */
+    Game - 	13 rounds
+            Show what's been scored
+            Roll/wantsToReRoll dice max 3 times
+            Check what can be scored
+            Choose what can be scored
+            End of 13 rounds show final score and status
+    */
 
         RoundResult[] currentScoreRecord = new RoundResult[NUMBER_OF_SCORING_OPTIONS];
         Arrays.fill(currentScoreRecord, new RoundResult());
@@ -449,11 +450,8 @@ public class Yahtzee {
         int currentScore = 0;
 
         int[] theDice = new int[NUMBER_OF_DICE];// dice scores
-        int noRolls = 0;
-        int temp = 0;
-        boolean reroll = true;
-        int[] rerollDice = new int[5];
-        int rerollDie = 0;
+        int numberOfReRolls = 0;
+
 
         System.out.println("Welcome to Yahtzee!");
 
@@ -470,38 +468,23 @@ public class Yahtzee {
             theDice = Dice.roll(NUMBER_OF_DICE);
             Dice.printDice(theDice);
 
-            //Check rerolls - three dice to reroll
-            System.out.println("Three chances to reroll");
-            noRolls = 0;
-            reroll = true;
-            rerollDie = 1;
-            while (reroll){
-                noRolls++;
-                if (rerollDie > 0) {
-                    rerollDie = InputUtils.readIntegerConsoleInput("How many dice do you want to reroll? (1-5 - 0 for no dice)");
-                    if (rerollDie > 0) {
-                        for (int i=0; i<rerollDie;i++) {
-                            temp = InputUtils.readIntegerConsoleInput("Select a die (1-5)");
-                            rerollDice[i] = temp - 1; //adjust for array index
-                        }
-                        for (int i=0; i<rerollDie;i++) {
-                            theDice[rerollDice[i]] = Dice.roll();
-                        }
-                        Dice.printDice(theDice);
-                    }
-                }else {
-                    reroll = false;
-                }
-                if (noRolls == 3) {
-                    reroll = false;
-                }
-            }//while
+            //Check rerolls - three dice to wantsToReRoll
+            System.out.println("Three chances to wantsToReRoll");
+            numberOfReRolls = 0;
 
-            //What can be scored?
+            while (numberOfReRolls++ < MAX_ALLOWED_REROLLS) {
+
+                int howManyDiceToReRoll = askHowManyDiceToReRoll();
+
+                if(howManyDiceToReRoll > 0) {
+                    int[] rerolledDice = reRollDice(theDice, howManyDiceToReRoll);
+                    theDice = rerolledDice.clone();
+                }
+                else break;
+            }
+
             canScoreThisRound = whatCanBeScored(currentScoreRecord, theDice);
-            //User chooses
             currentScoreRecord = chooseWhatToScore(currentScoreRecord, canScoreThisRound);
-            //Now print total score so far
             showCurrentScore(currentScoreRecord);
 
         }
@@ -510,7 +493,27 @@ public class Yahtzee {
         System.out.println("Your final score is " + currentScore);
         System.out.println("You scored:");
         showCurrentScore(currentScoreRecord);
+    }
 
+    static int[] reRollDice(int[] currentDice, int howManyDiceToReRoll) {
+        int[] theDice = currentDice.clone();
+        int[] diceToReRoll = new int[NUMBER_OF_DICE];
+
+        if (howManyDiceToReRoll > 0) {
+            for (int i = 0; i < howManyDiceToReRoll; i++) {
+                int dieToReRoll = InputUtils.readIntegerConsoleInput("Select a die (1-5)", 1, 5);
+                diceToReRoll[i] = dieToReRoll - 1; //adjust for array index
+            }
+            for (int i = 0; i < howManyDiceToReRoll; i++) {
+                theDice[diceToReRoll[i]] = Dice.roll();
+            }
+            Dice.printDice(theDice);
+        }
+        return theDice;
+    }
+
+    private static int askHowManyDiceToReRoll() {
+        return InputUtils.readIntegerConsoleInput("How many dice do you want to wantsToReRoll? (1-5 - 0 for no dice)", 0, 5);
     }
 
 }

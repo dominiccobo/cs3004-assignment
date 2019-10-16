@@ -6,6 +6,7 @@ package com.dominiccobo.cs3004.assignment;
  * @author Dominic Cobo (contact@dominiccobo.com)
  * @author Simon Taylor (some networking lecturer at brunel)
  */
+@SuppressWarnings("WeakerAccess")
 public class InputUtils {
 
     public static int readIntegerConsoleInput(String Prompt) {
@@ -16,6 +17,20 @@ public class InputUtils {
             result = 0;
         }
         return result;
+    }
+
+    public static int readIntegerConsoleInput(String prompt, int min, int max) {
+        final int i = readIntegerConsoleInput(prompt);
+
+        if(i < min) {
+            System.out.println("Minimum value is " + min);
+            return readIntegerConsoleInput(prompt, min, max);
+        }
+        if(i > max) {
+            System.out.println("Maximum value is " + max);
+            return readIntegerConsoleInput(prompt, min, max);
+        }
+        else return i;
     }
 
     public static String readConsoleInput(String prompt) {
