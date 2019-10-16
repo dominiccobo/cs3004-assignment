@@ -109,6 +109,96 @@ public class YahtzeeTest {
     }
 
     @Test
+    public void givenRolledDice_whenThreeSameDice_scoreIsSumOfAllDice() {
+        final Yahtzee.RoundResult[] roundResults = new Yahtzee.RoundResult[13];
+        Arrays.fill(roundResults, new Yahtzee.RoundResult());
+
+        int[] rolledDice = new int []{6,6,6,4,5};
+
+        final Yahtzee.RoundResult[] canBeScored = Yahtzee.whatCanBeScored(roundResults, rolledDice);
+
+        int expectedResult = 27;
+
+        assertThat(canBeScored[Yahtzee.TRIPPLE_SCORE_IDX].score).isEqualTo(expectedResult);
+        assertThat(canBeScored[Yahtzee.TRIPPLE_SCORE_IDX].status).isEqualTo(1);
+    }
+
+    @Test
+    public void givenRolledDice_whenFourSameDice_scoreIsSumOfAllDice() {
+        final Yahtzee.RoundResult[] roundResults = new Yahtzee.RoundResult[13];
+        Arrays.fill(roundResults, new Yahtzee.RoundResult());
+
+        int[] rolledDice = new int []{6,6,6,6,5};
+
+        final Yahtzee.RoundResult[] canBeScored = Yahtzee.whatCanBeScored(roundResults, rolledDice);
+
+        int expectedResult = 29;
+
+        assertThat(canBeScored[Yahtzee.QUAD_SCORE_IDX].score).isEqualTo(expectedResult);
+        assertThat(canBeScored[Yahtzee.QUAD_SCORE_IDX].status).isEqualTo(1);
+    }
+
+    @Test
+    public void givenRolledDice_whenThreeSameDiceAndTwoOfSameDice_scoreIs25() {
+        final Yahtzee.RoundResult[] roundResults = new Yahtzee.RoundResult[13];
+        Arrays.fill(roundResults, new Yahtzee.RoundResult());
+
+        int[] rolledDice = new int []{6,6,6,5,5};
+
+        final Yahtzee.RoundResult[] canBeScored = Yahtzee.whatCanBeScored(roundResults, rolledDice);
+
+        int expectedResult = 25;
+
+        assertThat(canBeScored[Yahtzee.FULL_HOUSE_SCORE_IDX].score).isEqualTo(expectedResult);
+        assertThat(canBeScored[Yahtzee.FULL_HOUSE_SCORE_IDX].status).isEqualTo(1);
+    }
+
+    @Test
+    public void givenRolledDice_whenFourSequentialDice_scoreIs30() {
+        final Yahtzee.RoundResult[] roundResults = new Yahtzee.RoundResult[13];
+        Arrays.fill(roundResults, new Yahtzee.RoundResult());
+
+        int[] rolledDice = new int []{1,2,3,4,2};
+
+        final Yahtzee.RoundResult[] canBeScored = Yahtzee.whatCanBeScored(roundResults, rolledDice);
+
+        int expectedResult = 30;
+
+        assertThat(canBeScored[Yahtzee.SHORT_STRAIGHT_SCORE_IDX].score).isEqualTo(expectedResult);
+        assertThat(canBeScored[Yahtzee.SHORT_STRAIGHT_SCORE_IDX].status).isEqualTo(1);
+    }
+
+    @Test
+    public void givenRolledDice_whenFiveSequentialDiceStartingFromOne_scoreIs40() {
+        final Yahtzee.RoundResult[] roundResults = new Yahtzee.RoundResult[13];
+        Arrays.fill(roundResults, new Yahtzee.RoundResult());
+
+        int[] rolledDice = new int []{1,2,3,4,5};
+
+        final Yahtzee.RoundResult[] canBeScored = Yahtzee.whatCanBeScored(roundResults, rolledDice);
+
+        int expectedResult = 40;
+
+        assertThat(canBeScored[Yahtzee.LONG_STRAIGHT_SCORE_IDX].score).isEqualTo(expectedResult);
+        assertThat(canBeScored[Yahtzee.LONG_STRAIGHT_SCORE_IDX].status).isEqualTo(1);
+    }
+
+    @Test
+    public void givenRolledDice_whenFiveSequentialDiceStartingFromTwo_scoreIs40() {
+        final Yahtzee.RoundResult[] roundResults = new Yahtzee.RoundResult[13];
+        Arrays.fill(roundResults, new Yahtzee.RoundResult());
+
+        int[] rolledDice = new int []{2,3,4,5,6};
+
+        final Yahtzee.RoundResult[] canBeScored = Yahtzee.whatCanBeScored(roundResults, rolledDice);
+
+        int expectedResult = 40;
+
+        assertThat(canBeScored[Yahtzee.LONG_STRAIGHT_SCORE_IDX].score).isEqualTo(expectedResult);
+        assertThat(canBeScored[Yahtzee.LONG_STRAIGHT_SCORE_IDX].status).isEqualTo(1);
+    }
+
+    @Test
     public void testCountNumberOfKind() {
 
         int[] numberOfEqual = new int[] {2, 2, 2, 4, 4};
