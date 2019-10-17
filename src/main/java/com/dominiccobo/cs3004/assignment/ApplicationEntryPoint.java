@@ -7,7 +7,8 @@ package com.dominiccobo.cs3004.assignment;
  */
 public class ApplicationEntryPoint {
     public static void main(String[] args) {
-        new Yahtzee().playGame();
-
+        final InputOutputStreams inputOutputStreams = new InputOutputStreams(System.in, System.out);
+        final Yahtzee yahtzee = new Yahtzee(inputOutputStreams);
+        yahtzee.playGame();
     }
 }

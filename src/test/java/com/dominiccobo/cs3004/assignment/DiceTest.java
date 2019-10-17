@@ -32,4 +32,14 @@ public class DiceTest {
         assertThat(results).hasLength(times);
     }
 
+    @Test
+    public void testCountNumberOfKind() {
+
+        int[] numberOfEqual = new int[] {2, 2, 2, 4, 4};
+        int numberToCheck = 2;
+        int expected = 3;
+        final int result = Dice.countNumberOfKind(numberToCheck, numberOfEqual);
+        assertThat(result).isEqualTo(expected);
+    }
+
 }

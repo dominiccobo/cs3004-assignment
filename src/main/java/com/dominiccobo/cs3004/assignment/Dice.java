@@ -1,5 +1,6 @@
 package com.dominiccobo.cs3004.assignment;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -43,5 +44,19 @@ public class Dice {
             strBuilder.append(dice).append("\t");
         }
         System.out.println(strBuilder.toString());
+    }
+
+    public static int countDifferentDices(int[] theDice) {
+        int count = 0;
+        for (int value : theDice) {
+            if (theDice[0] != value) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static int countNumberOfKind(int value, int[] rolledDice) {
+        return Arrays.stream(rolledDice).filter(iterVal -> iterVal == value).toArray().length;
     }
 }
