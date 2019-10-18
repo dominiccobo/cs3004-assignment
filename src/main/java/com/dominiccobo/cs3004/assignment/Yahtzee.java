@@ -1,6 +1,11 @@
 package com.dominiccobo.cs3004.assignment;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -45,11 +50,12 @@ public class Yahtzee {
         final ScoreBoard scoreBoard = new ScoreBoard();
         int currentScore = 0;
 
-        ioStreams.println("Welcome to Yahtzee!");
+        final String banner = readBanner();
+        ioStreams.println(banner);
 
-        for (int i = 0; i < rounds.size(); i++) {
-            Round round = rounds.get(i);
-            round = new Round(ioStreams, i, scoreBoard);
+        for (int i = 1; i <= NUMBER_OF_ROUNDS; i++) {
+            Round round = new Round(ioStreams, i, scoreBoard);
+            rounds.add(round);
             round.play();
         }
 
@@ -60,5 +66,17 @@ public class Yahtzee {
         ioStreams.println(s);
     }
 
+    private String readBanner() {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStream = classloader.getResourceAsStream("banner.txt");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        final String banner = bufferedReader.lines().collect(Collectors.joining("\n"));
+        try {
+            bufferedReader.close();
+            inputStream.close();
+        // FIXME: introduce logging...
+        } catch (IOException ignored) { }
+        return banner;
+    }
 }
 

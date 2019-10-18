@@ -41,11 +41,31 @@ public class ScoreBoard {
 
     public String buildScoreBoardString() {
         StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("\tCurrent Score\n");
+        strBuilder.append("Option\t\t\t\tScore\n");
+
+
+
         for (ScoringOption scoringOption : scoringOptions) {
-            String output = scoringOption.getScoringOptionName() + " scoring " + scoringOption.score + "points";
+            String padding = scoringOption.getScoringOptionName().length() > 12 ? ("\t\t\t") : ("\t\t\t\t\t");
+            String output = scoringOption.getScoringOptionName() + padding + scoringOption.score + "\n";
             strBuilder.append(output);
         }
         return strBuilder.toString();
+    }
+
+    public void resetAwarded() {
+        for (ScoringOption scoringOption : scoringOptions) {
+            scoringOption.canBeAwarded = false;
+        }
+    }
+
+    public void markOptionAsScored(ScoringOption scored) {
+        for (ScoringOption scoringOption : scoringOptions) {
+            if(scoringOption.getScoringOptionName().equals(scored.getScoringOptionName())) {
+                scoringOption.hasScored = true;
+            }
+        }
     }
 
     public int calculateCurrentScore() {

@@ -13,7 +13,7 @@ class Round {
 
     private final InputOutputStreams ioStreams;
 
-    private int currentScore = 0;
+    private int currentScore;
     private final int roundNumber;
     private final ScoreBoard currentScoreRecord;
 
@@ -21,14 +21,15 @@ class Round {
         this.ioStreams = ioStreams;
         this.roundNumber = roundNumber;
         this.currentScoreRecord = currentScoreRecord;
+        this.currentScore = currentScoreRecord.calculateCurrentScore();
     }
 
     ScoreBoard play() {
         //Print current status and score
-        ioStreams.println("\n\n\nRound " + roundNumber + " of " + Yahtzee.NUMBER_OF_ROUNDS);
+        ioStreams.println("\n\nRound " + roundNumber + " of " + Yahtzee.NUMBER_OF_ROUNDS);
         ioStreams.println("Current score is " + currentScore);
         ioStreams.println("Your current scoring status is:");
-        currentScore = currentScoreRecord.calculateCurrentScore();
+        currentScore += currentScoreRecord.calculateCurrentScore();
 
         //Roll the dice
         int[] theDice = Dice.roll(Yahtzee.NUMBER_OF_DICE);
@@ -44,26 +45,26 @@ class Round {
 
     private void chooseWhatToScore() {
         //Scoring Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
-        int choice = 0;
-        ioStreams.println("With your roll you can select...");
+        ioStreams.println("With your roll you can select: ");
         //Present choices - check if it has been scored and if it can be scored
         ArrayList<ScoringOption> scoringOptions = currentScoreRecord.scoringOptions;
         for (int i = 0; i < scoringOptions.size(); i++) {
             ScoringOption scoringOption = scoringOptions.get(i);
             if (!scoringOption.hasScoredAlready() && scoringOption.canBeAwarded) {
-                ioStreams.println("Select " + i + " for " + scoringOption.getScoringOptionName() + " scoring " + scoringOption.score + " points");
+                ioStreams.println(i + " for " + scoringOption.getScoringOptionName() + " scoring " + scoringOption.score + " points");
             }
         }
 
         //Choose and update score
-        choice = ioStreams.readIntegerConsoleInput("Choose one choice!");
+        int choice = ioStreams.readIntegerConsoleInput("Choose one choice!");
         ScoringOption chosenScore = scoringOptions.get(choice);
         ioStreams.println("You have chosen " + chosenScore.getScoringOptionName());
-        chosenScore.hasScored = true;
+        currentScoreRecord.markOptionAsScored(chosenScore);
+        currentScoreRecord.resetAwarded();
     }
 
     private int[] offerReRoll(int[] theDice) {
-        ioStreams.println(MAX_ALLOWED_REROLLS + " chances to wantsToReRoll");
+        ioStreams.println(MAX_ALLOWED_REROLLS + " chances to re roll.");
         int numberOfReRolls = 0;
 
         while (numberOfReRolls++ < MAX_ALLOWED_REROLLS) {
@@ -96,6 +97,6 @@ class Round {
     }
 
     private int askHowManyDiceToReRoll() {
-        return ioStreams.readIntegerConsoleInput("How many dice do you want to wantsToReRoll? (1-5 - 0 for no dice)", 0, 5);
+        return ioStreams.readIntegerConsoleInput("How many dice do you want to re roll? (1-5 - 0 for no dice)", 0, 5);
     }
 }
