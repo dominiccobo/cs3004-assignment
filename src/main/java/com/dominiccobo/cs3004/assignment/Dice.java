@@ -1,7 +1,6 @@
 package com.dominiccobo.cs3004.assignment;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Generic dice rolling code ..
@@ -72,5 +71,26 @@ public class Dice {
             previous = sortedDice[i];
         }
         return true;
+    }
+
+    private static Map<Integer, Integer> countInstancesOfNumberInRoll(int[] rolledDice) {
+        Map<Integer, Integer> instancesOfValue = new HashMap<>();
+        for (int number : rolledDice) {
+            Integer val = instancesOfValue.getOrDefault(number, 0);
+            Integer newValue = ++val;
+            instancesOfValue.put(number, newValue);
+        }
+        return instancesOfValue;
+    }
+
+    public static boolean hasXInstancesOf(int[] theDice, List mustContain) {
+        final Map<Integer, Integer> instancesOfValue = countInstancesOfNumberInRoll(theDice);
+        final Set<Integer> numberOfInstances = new HashSet<>();
+
+        for (Integer integer : instancesOfValue.keySet()) {
+            numberOfInstances.add(instancesOfValue.get(integer));
+        }
+
+        return (numberOfInstances.containsAll(mustContain));
     }
 }
