@@ -2,6 +2,8 @@ package com.dominiccobo.cs3004.assignment.scoring;
 
 import com.dominiccobo.cs3004.assignment.ScoringOption;
 
+import java.util.Arrays;
+
 /**
  * TODO: add class description.
  *
@@ -15,11 +17,7 @@ public class ChanceScoringOption extends ScoringOption {
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasScoredAlready()) {
             this.canBeAwarded = true;
-            this.score = 0;
-
-            for (int value : theDice) {
-                this.score = this.score + value;
-            }
+            this.score = Arrays.stream(theDice).sum();
         }
     }
 
