@@ -59,4 +59,18 @@ public class Dice {
     public static int countNumberOfKind(int value, int[] rolledDice) {
         return Arrays.stream(rolledDice).filter(iterVal -> iterVal == value).toArray().length;
     }
+
+    public static boolean isIncrementalSequenceInOnes(int[] theDice, int startAtIdx, int endAtIdx) {
+        int[] sortedDice = Arrays.copyOf(theDice, theDice.length);
+        Arrays.sort(sortedDice);
+        int previous = sortedDice[startAtIdx];
+        for (int i = startAtIdx; i <= endAtIdx; i++) {
+            int difference = sortedDice[i] - previous;
+            if (difference > 1) {
+                return false;
+            }
+            previous = sortedDice[i];
+        }
+        return true;
+    }
 }

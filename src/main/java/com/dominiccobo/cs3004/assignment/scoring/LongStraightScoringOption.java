@@ -1,5 +1,6 @@
 package com.dominiccobo.cs3004.assignment.scoring;
 
+import com.dominiccobo.cs3004.assignment.Dice;
 import com.dominiccobo.cs3004.assignment.ScoringOption;
 
 /**
@@ -18,9 +19,7 @@ public class LongStraightScoringOption extends ScoringOption {
     @Override
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasScoredAlready()) {
-            //CHECK LONG STRAIGHT
-            //Check for Straight D1-5
-            if ((theDice[0] == theDice[1] - 1) && (theDice[1] == theDice[2] - 1) && (theDice[2] == theDice[3] - 1) && (theDice[3] == theDice[4] - 1)) {
+            if(Dice.isIncrementalSequenceInOnes(theDice, 0, 5)) {
                 this.canBeAwarded = true;
             }
         }
