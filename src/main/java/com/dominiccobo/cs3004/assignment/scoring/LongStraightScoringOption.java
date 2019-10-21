@@ -19,7 +19,7 @@ public class LongStraightScoringOption extends ScoringOption {
     @Override
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasScoredAlready()) {
-            if(Dice.isIncrementalSequenceInOnes(theDice, 0, 5)) {
+            if(Dice.isIncrementalSequenceInOnes(theDice, 0, 4)) {
                 this.canBeAwarded = true;
             }
         }
