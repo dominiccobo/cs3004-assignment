@@ -29,32 +29,32 @@ public class InputOutputStreams {
 
     public void println(String line) {
         outputStream.println(line);
+        outputStream.flush();
     }
 
     public String readConsoleInput(String prompt) {
         String inputLine = "";
-        outputStream.print(prompt);
+        outputStream.println("[INPUT]" + prompt);
         try {
             InputStreamReader sys = new InputStreamReader(this.inputStream);
             BufferedReader inBuffer = new BufferedReader(sys);
             inputLine = inBuffer.readLine();
         } catch (Exception e) {
-            String err = e.toString();
-            System.err.println(err);
+            e.printStackTrace();
         }
         return inputLine;
     }
 
     public int readIntegerConsoleInput(String prompt, int min, int max) {
-        final int i = new InputOutputStreams().readIntegerConsoleInput(prompt);
+        final int i = readIntegerConsoleInput(prompt);
 
         if(i < min) {
             outputStream.println("Minimum value is " + min);
-            return new InputOutputStreams().readIntegerConsoleInput(prompt, min, max);
+            return readIntegerConsoleInput(prompt, min, max);
         }
         if(i > max) {
             outputStream.println("Maximum value is " + max);
-            return new InputOutputStreams().readIntegerConsoleInput(prompt, min, max);
+            return readIntegerConsoleInput(prompt, min, max);
         }
         else return i;
     }
