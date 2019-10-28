@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO: add class description.
+ * Evaluates whether or not a particular dice roll can
+ * result in a Tripple score.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

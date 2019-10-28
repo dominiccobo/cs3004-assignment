@@ -6,7 +6,8 @@ import com.dominiccobo.cs3004.assignment.ScoringOption;
 import java.util.*;
 
 /**
- * TODO: add class description.
+ * Evaluates whether or not a particular dice roll can
+ * result in a Full-House score.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

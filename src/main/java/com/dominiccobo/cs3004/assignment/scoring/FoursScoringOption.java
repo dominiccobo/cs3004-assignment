@@ -1,7 +1,8 @@
 package com.dominiccobo.cs3004.assignment.scoring;
 
 /**
- * TODO: add class description.
+ * Evaluates whether or not a particular dice roll can
+ * result in a Fours score.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

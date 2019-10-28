@@ -4,7 +4,9 @@ import com.dominiccobo.cs3004.assignment.Dice;
 import com.dominiccobo.cs3004.assignment.ScoringOption;
 
 /**
- * TODO: add class description.
+ * Provides reusable scoring evaluation logic for upper section scores.
+ * Upper sections are considered those that require n instances of a
+ * particular number to obtain the score. The score is always n x n.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

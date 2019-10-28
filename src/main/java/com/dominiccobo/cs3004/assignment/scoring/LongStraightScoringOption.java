@@ -4,7 +4,8 @@ import com.dominiccobo.cs3004.assignment.Dice;
 import com.dominiccobo.cs3004.assignment.ScoringOption;
 
 /**
- * TODO: add class description.
+ * Evaluates whether or not a particular dice roll can
+ * result in a Long-straight score.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

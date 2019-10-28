@@ -5,7 +5,8 @@ import com.dominiccobo.cs3004.assignment.ScoringOption;
 import static com.dominiccobo.cs3004.assignment.Dice.countDifferentDices;
 
 /**
- * TODO: add class description.
+ * Evaluates whether or not a particular dice roll can
+ * result in a Yahtzee score.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
