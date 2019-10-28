@@ -31,7 +31,7 @@ public class InputOutputStreams {
         outputStream.println(line);
     }
 
-    private String readConsoleInput(String prompt) {
+    public String readConsoleInput(String prompt) {
         String inputLine = "";
         outputStream.print(prompt);
         try {

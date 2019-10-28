@@ -29,7 +29,7 @@ public class Player extends Thread {
 
     @Override
     public void run() {
-        // TODO: get player name....
+        this.name = this.inputOutputStreams.readConsoleInput("Choose a name: ");
         this.gameInstance.playGame();
     }
 }
