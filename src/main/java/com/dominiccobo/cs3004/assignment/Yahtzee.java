@@ -1,5 +1,7 @@
 package com.dominiccobo.cs3004.assignment;
 
+import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

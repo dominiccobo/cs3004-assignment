@@ -1,4 +1,4 @@
-package com.dominiccobo.cs3004.assignment;
+package com.dominiccobo.cs3004.assignment.connection;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

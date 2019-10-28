@@ -1,5 +1,6 @@
 package com.dominiccobo.cs3004.assignment;
 
+import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
 import org.junit.Test;
 
 /**
