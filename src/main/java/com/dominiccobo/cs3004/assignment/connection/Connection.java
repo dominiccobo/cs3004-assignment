@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * TODO: add class description.
+ * Models the required information for the game to contact a playing entity whether
+ * local, remote or emulated.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

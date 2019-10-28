@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 /**
- * TODO: add class description.
+ * Provides an implementation of a {@link Connection} specific to the {@link Socket} API.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
