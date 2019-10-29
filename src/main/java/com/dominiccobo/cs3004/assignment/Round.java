@@ -5,12 +5,14 @@ import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
 import java.util.ArrayList;
 
 /**
- * TODO: add class description.
+ * Models a round in a game of Yahtzee. A round consists of a player exercising their
+ * right to roll a dice and re-roll 3 times in order to achieve their desired score.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
 class Round {
 
+    @SuppressWarnings("WeakerAccess")
     public static final int MAX_ALLOWED_REROLLS = 3;
 
     private final InputOutputStreams ioStreams;
@@ -35,9 +37,8 @@ class Round {
 
         //Roll the dice
         int[] theDice = Dice.roll(Yahtzee.NUMBER_OF_DICE);
-        Dice.printDice(theDice);
 
-        // offer the chance to reroll
+        ioStreams.println(Dice.printDice(theDice));
         theDice = offerReRoll(theDice);
 
         currentScoreRecord.whatCanBeScored(theDice);

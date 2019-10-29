@@ -2,6 +2,8 @@ package com.dominiccobo.cs3004.assignment;
 
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -13,13 +15,17 @@ import java.io.PrintStream;
  */
 public class Player extends Thread {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Player.class);
+
     private String name;
     private Yahtzee gameInstance;
     private Connection connectedSocket;
+    private final TurnMediator turnMediator;
     private InputOutputStreams inputOutputStreams;
 
-    public Player(Connection playerConnection) throws IOException {
+    public Player(Connection playerConnection, TurnMediator turnMediator) throws IOException {
         this.connectedSocket = playerConnection;
+        this.turnMediator = turnMediator;
         this.inputOutputStreams = new InputOutputStreams(
                 connectedSocket.getInputStream(),
                 new PrintStream(connectedSocket.getOutputStream())
@@ -29,7 +35,23 @@ public class Player extends Thread {
 
     @Override
     public void run() {
-        this.name = this.inputOutputStreams.readConsoleInput("Choose a name: ");
+        getPlayerNameDetails();
+
+        LOG.info("{} is ready.", name);
         this.gameInstance.playGame();
+
+        while(this.gameInstance.hasNext()) {
+            if(turnMediator.hasTurn(this)) {
+                turnMediator.lockTurn(this);
+                Round roundToPlay = this.gameInstance.next();
+                roundToPlay.play();
+                turnMediator.releaseTurn(this);
+            }
+        }
+        this.gameInstance.printScore();
+    }
+
+    private void getPlayerNameDetails() {
+        this.name = this.inputOutputStreams.readConsoleInput("Choose a name: ");
     }
 }

@@ -37,12 +37,12 @@ public class Dice {
      * Prints an array as a result of dice rolls to the Std out stream.
      * @param theseDice the resulting array roll dice.
      */
-    static void printDice(int[] theseDice) {
+    static String printDice(int[] theseDice) {
         StringBuilder strBuilder = new StringBuilder("You rolled: ");
         for(int dice: theseDice) {
             strBuilder.append(dice).append("\t");
         }
-        System.out.println(strBuilder.toString());
+        return strBuilder.toString();
     }
 
     public static int countDifferentDices(int[] theDice) {

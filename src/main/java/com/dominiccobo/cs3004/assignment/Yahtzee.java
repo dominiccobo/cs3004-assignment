@@ -6,22 +6,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
  *
  *   Welcome to Yahtzee -
- *   Scoring - Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
- *
- *     currentScoreRecord - For each of the above {status, score}
- *     canScoreThisRound - For each of the above  {can it be scored? i.e. can be scored and not previously scored, score}
- *     theDice - {what's been rolled this turn}
- *     currentScore - current score
- *
- *     showCurrentScore - calculate and show the current score from currentScoreRecord
- *     whatCanBeScored - update canScoreThisRound from theDice and currentScoreRecord
- *     chooseWhatToScore - user chooses from canScoreThisRound and update currentScoreRecord
  *
  *     Game - 	13 rounds
  *             Show what's been scored
@@ -34,38 +24,33 @@ import java.util.stream.Collectors;
  * @author Dominic Cobo (contact@dominiccobo.com) - heavily refactored...
  *
  */
-public class Yahtzee {
+@SuppressWarnings("WeakerAccess")
+public class Yahtzee implements Iterator<Round> {
 
     public static final int NUMBER_OF_DICE = 5;
     public static final int NUMBER_OF_ROUNDS = 13;
 
     private InputOutputStreams ioStreams;
-    private ArrayList<Round> rounds;
+    private int currentScore;
+    private ScoreBoard scoreBoard = new ScoreBoard();
+    private int currentRoundNo = 1;
 
     public Yahtzee(InputOutputStreams ioStreams) {
         this.ioStreams = ioStreams;
-        rounds = new ArrayList<>(NUMBER_OF_ROUNDS);
+        currentScore = 0;
     }
 
     @SuppressWarnings("WeakerAccess")
     public void playGame() {
-        final ScoreBoard scoreBoard = new ScoreBoard();
-        int currentScore = 0;
 
         final String banner = readBanner();
         ioStreams.println(banner);
+    }
 
-        for (int i = 1; i <= NUMBER_OF_ROUNDS; i++) {
-            Round round = new Round(ioStreams, i, scoreBoard);
-            rounds.add(round);
-            round.play();
-        }
-
+    public void printScore() {
         currentScore = scoreBoard.calculateCurrentScore();
         ioStreams.println("Your final score is " + currentScore);
-        ioStreams.println("You scored:");
-        final String s = scoreBoard.buildScoreBoardString();
-        ioStreams.println(s);
+        ioStreams.println(scoreBoard.buildScoreBoardString());
     }
 
     private String readBanner() {
@@ -79,6 +64,16 @@ public class Yahtzee {
         // FIXME: introduce logging...
         } catch (IOException ignored) { }
         return banner;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return currentRoundNo <= NUMBER_OF_ROUNDS;
+    }
+
+    @Override
+    public Round next() {
+        return new Round(ioStreams, currentRoundNo, scoreBoard);
     }
 }
 
