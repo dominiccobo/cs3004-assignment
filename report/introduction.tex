@@ -1,0 +1,32 @@
+\section{Introduction}
+
+%This section gives a short overview of your assignment.
+
+The aim of this report is to evaluate the requirements, design and testing of a distributed computing application. The task was to create distributed, multi-player implementation of the Yahtzee Game. 
+
+Yahtzee is a game where players take turns to roll 5 dice over the course of 13 rounds. There are 13 scoring options in Yahtzee. A roll of dice is evaluated against these thirteen options of which one or many may qualify, but only one may be chosen after the end of the round; the points for this score are calculated. The score may not be chosen again in future rounds.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{ | c | c | c |}
+		\hline
+		Scoring Name & Description & Awards\\
+		\hline
+		\hline
+		Aces & Any combination & Sum of all dice rolled as ones \\
+		Twos & Any combination & Sum of all dice rolled as twos \\
+		Threes & Any combination & Sum of all dice rolled as three \\
+		Fours & Any combination & Sum of all dice rolled as fours \\
+		Five & Any combination & Sum of all dice rolled as five \\
+		Six & Any combination & Sum of all dice rolled as six \\
+		Three of Kind & At least three of the same & Sum of all dice \\
+		Four of Kind & At least four of the same & Sum of all dice \\
+		Full House  & Three of one kind, two of one kind & 25 points \\
+		Small Straight & Four sequential dice & 30 points \\
+		Long Straight  & Five sequential dice & 40 points \\ 
+		Yahtzee & All five dice are identical & 50 points \\
+		Chance & Any combination & Sum of all dice \\
+		\hline
+	\end{tabular}
+	\caption{Scoring rules in a Game of Yahtzee \parencite{yahtzeeBooklet}}
+\end{table}
