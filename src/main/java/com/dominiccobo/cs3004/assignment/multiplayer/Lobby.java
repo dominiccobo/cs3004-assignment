@@ -22,7 +22,7 @@ public class Lobby implements LobbyLifecycleEvents {
 
     private static final Logger LOG = LoggerFactory.getLogger(Lobby.class);
 
-    public static final int MAX_PLAYER_COUNT = 4;
+    public static final int MAX_PLAYER_COUNT = 3;
 
     private List<Player> players = new ArrayList<>();
     private ServerSocket serverSocket;
@@ -31,7 +31,7 @@ public class Lobby implements LobbyLifecycleEvents {
 
     private Lobby(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
-        this.turnMediator = new FFAMultiPlayerTurnMediator();
+        this.turnMediator = new OrderlyQueuedMultiPlayerTurnMediator(players);
         onLobbyStateChange(LobbyState.CREATED);
         onLobbyCreated();
     }
@@ -65,26 +65,28 @@ public class Lobby implements LobbyLifecycleEvents {
     public void onPlayerConnect(Player player) {
         this.players.add(player);
         player.start();
+        onPlayerReady(player);
     }
 
 
     // TODO: needs observer mechanism to interface between this lobby and the player.
     @Override
     public void onPlayerReady(Player playerReady) {
-        // TODO: add player to ready players....
-        if (areAllPlayersReady())
+        if (areAllPlayersReady()) {
+            LOG.info("All players are ready. Readying lobby.");
             onLobbyReady();
+        }
     }
 
     private boolean areAllPlayersReady() {
-        return true;
+        return players.size() == MAX_PLAYER_COUNT;
     }
 
     @Override
     public void onLobbyReady() {
         onLobbyStateChange(LobbyState.READY);
+        turnMediator.start();
         onGameStart();
-        // TODO: inform mediator to allow players to start.
     }
 
     @Override

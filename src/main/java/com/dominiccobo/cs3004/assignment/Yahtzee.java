@@ -1,6 +1,8 @@
 package com.dominiccobo.cs3004.assignment;
 
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,13 +29,15 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 public class Yahtzee implements Iterator<Round> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Yahtzee.class);
+
     public static final int NUMBER_OF_DICE = 5;
     public static final int NUMBER_OF_ROUNDS = 13;
 
     private InputOutputStreams ioStreams;
     private int currentScore;
     private ScoreBoard scoreBoard = new ScoreBoard();
-    private int currentRoundNo = 1;
+    private int currentRoundNo = 0;
 
     public Yahtzee(InputOutputStreams ioStreams) {
         this.ioStreams = ioStreams;
@@ -61,18 +65,20 @@ public class Yahtzee implements Iterator<Round> {
         try {
             bufferedReader.close();
             inputStream.close();
-        // FIXME: introduce logging...
-        } catch (IOException ignored) { }
+        } catch (IOException e) {
+            LOG.warn("Could not close streams:", e);
+        }
         return banner;
     }
 
     @Override
     public boolean hasNext() {
-        return currentRoundNo <= NUMBER_OF_ROUNDS;
+        return (currentRoundNo + 1) <= NUMBER_OF_ROUNDS;
     }
 
     @Override
     public Round next() {
+        currentRoundNo++;
         return new Round(ioStreams, currentRoundNo, scoreBoard);
     }
 }

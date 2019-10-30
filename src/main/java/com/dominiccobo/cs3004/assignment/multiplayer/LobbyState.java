@@ -1,7 +1,7 @@
 package com.dominiccobo.cs3004.assignment.multiplayer;
 
 /**
- * TODO: add class description.
+ * Details the states in which a lobby can be in.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

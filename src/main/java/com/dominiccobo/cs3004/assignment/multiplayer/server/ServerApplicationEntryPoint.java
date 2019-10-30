@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * TODO: add class description.
+ * Application entry point for the server.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

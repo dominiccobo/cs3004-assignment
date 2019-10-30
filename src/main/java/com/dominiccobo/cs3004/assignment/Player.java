@@ -17,7 +17,7 @@ public class Player extends Thread {
 
     private static final Logger LOG = LoggerFactory.getLogger(Player.class);
 
-    private String name;
+    private String alias;
     private Yahtzee gameInstance;
     private Connection connectedSocket;
     private final TurnMediator turnMediator;
@@ -33,11 +33,15 @@ public class Player extends Thread {
         this.gameInstance = new Yahtzee(inputOutputStreams);
     }
 
+    public final String getAlias() {
+        return alias;
+    }
+
     @Override
     public void run() {
         getPlayerNameDetails();
 
-        LOG.info("{} is ready.", name);
+        LOG.info("{} is ready.", alias);
         this.gameInstance.playGame();
 
         while(this.gameInstance.hasNext()) {
@@ -52,6 +56,7 @@ public class Player extends Thread {
     }
 
     private void getPlayerNameDetails() {
-        this.name = this.inputOutputStreams.readConsoleInput("Choose a name: ");
+        this.alias = this.inputOutputStreams.readConsoleInput("Choose a name: ");
+        this.setName("PlayerThread-" + alias);
     }
 }
