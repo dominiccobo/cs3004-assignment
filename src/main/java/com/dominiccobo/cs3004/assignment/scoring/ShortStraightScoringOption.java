@@ -20,11 +20,11 @@ public class ShortStraightScoringOption extends ScoringOption {
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasScoredAlready()) {
             //Check for Short Straight D1-4, D2-5
-            if (Dice.isIncrementalSequenceInOnes(theDice, 0, 4)) {
+            if (Dice.isIncrementalSequenceInOnes(theDice, 0, 3)) {
                 this.canBeAwarded = true;
                 this.score = 30;
             }
-            else if(Dice.isIncrementalSequenceInOnes(theDice, 1, 5)) {
+            else if(Dice.isIncrementalSequenceInOnes(theDice, 1, 4)) {
                 this.canBeAwarded = true;
                 this.score = 30;
             }
