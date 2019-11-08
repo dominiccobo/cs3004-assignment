@@ -4,6 +4,8 @@ import com.dominiccobo.cs3004.assignment.Player;
 import com.dominiccobo.cs3004.assignment.PlayerLifecycleEvents;
 import com.dominiccobo.cs3004.assignment.TurnMediator;
 import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
+import com.dominiccobo.cs3004.assignment.api.PlayerRoundFinishedEvent;
+import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.SocketConnection;
 import com.google.common.eventbus.EventBus;
@@ -126,6 +128,16 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
     public void on(PlayerReadyEvent event) {
         final Optional<Player> readyPlayer = players.stream().filter(player -> player.getAlias().equals(event.playerName)).findFirst();
         readyPlayer.ifPresent(this::onPlayerReady);
+    }
+
+    @Override
+    public void on(PlayerRoundStartedEvent event) {
+        LOG.info("{} has started playing their round.", event.playerName);
+    }
+
+    @Override
+    public void on(PlayerRoundFinishedEvent event) {
+        LOG.info("{} finished with score {}", event.playerName, event.playerScore.buildScoreBoardString());
     }
 
     public static class Factory {

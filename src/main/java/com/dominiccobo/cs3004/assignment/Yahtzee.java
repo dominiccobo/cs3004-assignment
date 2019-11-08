@@ -48,6 +48,7 @@ public class Yahtzee implements Iterator<Round> {
     public void playGame(String playerName) {
         final String banner = readBanner();
         ioStreams.println(banner);
+        ioStreams.println("Welcome " + playerName);
     }
 
     public void printScore() {

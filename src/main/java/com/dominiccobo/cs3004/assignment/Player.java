@@ -1,6 +1,8 @@
 package com.dominiccobo.cs3004.assignment;
 
 import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
+import com.dominiccobo.cs3004.assignment.api.PlayerRoundFinishedEvent;
+import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
 import com.google.common.eventbus.EventBus;
@@ -45,8 +47,15 @@ public class Player extends Thread {
         while(this.gameInstance.hasNext()) {
             if(turnMediator.hasTurn(this)) {
                 turnMediator.lockTurn(this);
+                this.eventbus.post(
+                        new PlayerRoundStartedEvent(this.alias)
+                );
                 Round roundToPlay = this.gameInstance.next();
-                roundToPlay.play();
+                ScoreBoard resultingScore = roundToPlay.play();
+                this.eventbus.post(new PlayerRoundFinishedEvent(
+                        this.alias,
+                        resultingScore
+                ));
                 turnMediator.releaseTurn(this);
             }
         }
