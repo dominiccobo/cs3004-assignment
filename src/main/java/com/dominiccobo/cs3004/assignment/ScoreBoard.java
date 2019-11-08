@@ -48,7 +48,7 @@ public class ScoreBoard {
 
         for (ScoringOption scoringOption : scoringOptions) {
             String padding = scoringOption.getScoringOptionName().length() > 12 ? ("\t\t\t") : ("\t\t\t\t\t");
-            String output = scoringOption.getScoringOptionName() + padding + scoringOption.score + "\n";
+            String output = scoringOption.getScoringOptionName() + padding + scoringOption.getScore() + "\n";
             strBuilder.append(output);
         }
         return strBuilder.toString();
@@ -56,14 +56,14 @@ public class ScoreBoard {
 
     public void resetAwarded() {
         for (ScoringOption scoringOption : scoringOptions) {
-            scoringOption.canBeAwarded = false;
+            scoringOption.resetAwardable();
         }
     }
 
     public void markOptionAsScored(ScoringOption scored) {
         for (ScoringOption scoringOption : scoringOptions) {
             if(scoringOption.getScoringOptionName().equals(scored.getScoringOptionName())) {
-                scoringOption.hasScored = true;
+                scoringOption.markAsScored();
             }
         }
     }
@@ -71,8 +71,8 @@ public class ScoreBoard {
     public int calculateCurrentScore() {
         int score = 0;
         for (ScoringOption scoringOption : scoringOptions) {
-            if(scoringOption.hasScored) {
-                score += scoringOption.score;
+            if(scoringOption.hasOptionBeenScored()) {
+                score += scoringOption.getScore();
             }
         }
         return score;

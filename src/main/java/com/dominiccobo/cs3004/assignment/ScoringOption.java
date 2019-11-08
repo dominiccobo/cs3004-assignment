@@ -6,23 +6,32 @@ package com.dominiccobo.cs3004.assignment;
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
+@SuppressWarnings({"WeakerAccess"})
 public abstract class ScoringOption {
     protected boolean hasScored;
     protected boolean canBeAwarded;
     protected int score;
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    protected boolean hasScoredAlready() {
+    public boolean hasOptionBeenScored() {
         return hasScored;
+    }
+
+    public void markAsScored() {
+        hasScored = true;
+    }
+
+    public void markAsAwardable() {
+        canBeAwarded = true;
+    }
+
+    public void resetAwardable() {
+        canBeAwarded = false;
     }
 
     public abstract void checkAgainstDice(int[] theDice);
 
     public abstract String getScoringOptionName();
-
-    public boolean isHasScored() {
-        return hasScored;
-    }
 
     public boolean canScoreBeAwarded() {
         return canBeAwarded;

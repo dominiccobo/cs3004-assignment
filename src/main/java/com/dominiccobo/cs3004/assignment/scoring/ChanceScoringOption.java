@@ -16,7 +16,7 @@ public class ChanceScoringOption extends ScoringOption {
 
     @Override
     public void checkAgainstDice(int[] theDice) {
-        if (!this.hasScoredAlready()) {
+        if (!this.hasOptionBeenScored()) {
             this.canBeAwarded = true;
             this.score = Arrays.stream(theDice).sum();
         }

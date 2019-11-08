@@ -21,7 +21,7 @@ public class FullHouseScoringOption extends ScoringOption {
 
     @Override
     public void checkAgainstDice(int[] theDice) {
-        if (!this.hasScoredAlready()) {
+        if (!this.hasOptionBeenScored()) {
             if (hasTwoOfOneAndThreeOfAnother(theDice)) {
                 this.canBeAwarded = true;
             }

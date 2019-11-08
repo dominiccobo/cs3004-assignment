@@ -50,23 +50,27 @@ class Round {
     }
 
     private void chooseWhatToScore() {
-        //Scoring Y FH LS SS 4K 3K On Tw Th Fo Fi Si C
-        ioStreams.println("With your roll you can select: ");
-        //Present choices - check if it has been scored and if it can be scored
-        ArrayList<ScoringOption> scoringOptions = currentScoreRecord.scoringOptions;
-        for (int i = 0; i < scoringOptions.size(); i++) {
-            ScoringOption scoringOption = scoringOptions.get(i);
-            if (!scoringOption.hasScoredAlready() && scoringOption.canBeAwarded) {
-                ioStreams.println(i + " for " + scoringOption.getScoringOptionName() + " scoring " + scoringOption.score + " points");
-            }
-        }
+        ioStreams.println(generateScoreChoicePrompt());
 
         //Choose and update score
-        int choice = ioStreams.readIntegerConsoleInput("Choose one choice!", 0, scoringOptions.size() - 1);
-        ScoringOption chosenScore = scoringOptions.get(choice);
+        int choice = ioStreams.readIntegerConsoleInput("Choose one choice!", 0, currentScoreRecord.scoringOptions.size() - 1);
+        ScoringOption chosenScore = currentScoreRecord.scoringOptions.get(choice);
         ioStreams.println("You have chosen " + chosenScore.getScoringOptionName());
         currentScoreRecord.markOptionAsScored(chosenScore);
         currentScoreRecord.resetAwarded();
+    }
+
+    private String generateScoreChoicePrompt() {
+        StringBuilder promptBuilder = new StringBuilder();
+        promptBuilder.append("With your roll you can select: \n");
+        ArrayList<ScoringOption> scoringOptions = currentScoreRecord.scoringOptions;
+        for (int i = 0; i < scoringOptions.size(); i++) {
+            ScoringOption scoringOption = scoringOptions.get(i);
+            if (!scoringOption.hasOptionBeenScored() && scoringOption.canScoreBeAwarded()) {
+                promptBuilder.append(i + " for " + scoringOption.getScoringOptionName() + " scoring " + scoringOption.getScore() + " points\n");
+            }
+        }
+        return promptBuilder.toString();
     }
 
     private int[] offerReRoll(int[] theDice) {

@@ -18,7 +18,7 @@ public class TripleScoringOption extends ScoringOption {
 
     @Override
     public void checkAgainstDice(int[] theDice) {
-        if (!this.hasScoredAlready()) {
+        if (!this.hasOptionBeenScored()) {
             if (hasThreeInstancesOfValue(theDice)) {
                 this.canBeAwarded = true;
                 this.score = Arrays.stream(theDice).sum();

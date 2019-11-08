@@ -19,7 +19,7 @@ public class YahtzeeScoringOption extends ScoringOption {
     }
 
     public void checkAgainstDice(int[] theDice) {
-        if (!this.hasScoredAlready()) {
+        if (!this.hasOptionBeenScored()) {
             //CHECK FOR YAHTZEE
             int countedDifferences = countDifferentDices(theDice);
             if (countedDifferences == 0) {

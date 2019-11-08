@@ -20,7 +20,7 @@ public abstract class UpperSectionScoringOption extends ScoringOption {
 
     @Override
     public void checkAgainstDice(int[] theDice) {
-        if (!this.hasScoredAlready()) {
+        if (!this.hasOptionBeenScored()) {
             this.canBeAwarded = true;
             score = Dice.countNumberOfKind(upperSectionNumber, theDice) * upperSectionNumber;
         }

@@ -18,7 +18,7 @@ public class ShortStraightScoringOption extends ScoringOption {
 
     @Override
     public void checkAgainstDice(int[] theDice) {
-        if (!this.hasScoredAlready()) {
+        if (!this.hasOptionBeenScored()) {
             //Check for Short Straight D1-4, D2-5
             if (Dice.isIncrementalSequenceInOnes(theDice, 0, 3)) {
                 this.canBeAwarded = true;

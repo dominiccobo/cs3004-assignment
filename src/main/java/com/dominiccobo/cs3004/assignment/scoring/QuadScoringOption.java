@@ -18,7 +18,7 @@ public class QuadScoringOption extends ScoringOption {
 
     @Override
     public void checkAgainstDice(int[] theDice) {
-        if (!this.hasScoredAlready()) {
+        if (!this.hasOptionBeenScored()) {
             if(hasFourOfKind(theDice)) {
                 this.canBeAwarded = true;
                 this.score = Arrays.stream(theDice).sum();
