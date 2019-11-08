@@ -1,9 +1,6 @@
 package com.dominiccobo.cs3004.assignment.connection;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 
 /**
  * Collection of utilities relating to handling console input ...
@@ -22,9 +19,9 @@ public class InputOutputStreams {
         this.outputStream = System.out;
     }
 
-    public InputOutputStreams(InputStream inputStream, PrintStream outputStream) {
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+    public InputOutputStreams(Connection connection) throws IOException {
+        this.inputStream = connection.getInputStream();
+        this.outputStream = new PrintStream(connection.getOutputStream());
     }
 
     public void println(String line) {

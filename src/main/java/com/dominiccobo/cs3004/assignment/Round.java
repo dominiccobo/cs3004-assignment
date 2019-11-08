@@ -30,11 +30,7 @@ class Round {
 
     ScoreBoard play() {
         //Print current status and score
-        ioStreams.println("\n\nRound " + roundNumber + " of " + Yahtzee.NUMBER_OF_ROUNDS);
-        ioStreams.println("Current score is " + currentScore);
-        ioStreams.println("Your current scoring status is:");
-        currentScore += currentScoreRecord.calculateCurrentScore();
-
+        showRoundStartMessage();
         //Roll the dice
         int[] theDice = Dice.roll(Yahtzee.NUMBER_OF_DICE);
 
@@ -44,6 +40,13 @@ class Round {
         currentScoreRecord.whatCanBeScored(theDice);
         chooseWhatToScore();
         return currentScoreRecord;
+    }
+
+    private void showRoundStartMessage() {
+        ioStreams.println("\n\nRound " + roundNumber + " of " + Yahtzee.NUMBER_OF_ROUNDS);
+        ioStreams.println("Current score is " + currentScore);
+        ioStreams.println("Your current scoring status is:");
+        currentScore += currentScoreRecord.calculateCurrentScore();
     }
 
     private void chooseWhatToScore() {
@@ -59,7 +62,7 @@ class Round {
         }
 
         //Choose and update score
-        int choice = ioStreams.readIntegerConsoleInput("Choose one choice!");
+        int choice = ioStreams.readIntegerConsoleInput("Choose one choice!", 0, scoringOptions.size() - 1);
         ScoringOption chosenScore = scoringOptions.get(choice);
         ioStreams.println("You have chosen " + chosenScore.getScoringOptionName());
         currentScoreRecord.markOptionAsScored(chosenScore);

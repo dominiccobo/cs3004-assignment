@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.PrintStream;
 
 /**
  * Each player has an associated connection of players.
@@ -19,17 +18,12 @@ public class Player extends Thread {
 
     private String alias;
     private Yahtzee gameInstance;
-    private Connection connectedSocket;
     private final TurnMediator turnMediator;
     private InputOutputStreams inputOutputStreams;
 
     public Player(Connection playerConnection, TurnMediator turnMediator) throws IOException {
-        this.connectedSocket = playerConnection;
         this.turnMediator = turnMediator;
-        this.inputOutputStreams = new InputOutputStreams(
-                connectedSocket.getInputStream(),
-                new PrintStream(connectedSocket.getOutputStream())
-        );
+        this.inputOutputStreams = new InputOutputStreams(playerConnection);
         this.gameInstance = new Yahtzee(inputOutputStreams);
     }
 
@@ -42,7 +36,7 @@ public class Player extends Thread {
         getPlayerNameDetails();
 
         LOG.info("{} is ready.", alias);
-        this.gameInstance.playGame();
+        this.gameInstance.playGame(alias);
 
         while(this.gameInstance.hasNext()) {
             if(turnMediator.hasTurn(this)) {

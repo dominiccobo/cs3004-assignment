@@ -45,8 +45,7 @@ public class Yahtzee implements Iterator<Round> {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public void playGame() {
-
+    public void playGame(String playerName) {
         final String banner = readBanner();
         ioStreams.println(banner);
     }
@@ -76,6 +75,7 @@ public class Yahtzee implements Iterator<Round> {
         return (currentRoundNo + 1) <= NUMBER_OF_ROUNDS;
     }
 
+    // TODO: should return a transaction object that can be committed upon completion.
     @Override
     public Round next() {
         currentRoundNo++;
