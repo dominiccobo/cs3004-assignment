@@ -52,12 +52,23 @@ class Round {
     private void chooseWhatToScore() {
         ioStreams.println(generateScoreChoicePrompt());
 
-        //Choose and update score
-        int choice = ioStreams.readIntegerConsoleInput("Choose one choice!", 0, currentScoreRecord.scoringOptions.size() - 1);
-        ScoringOption chosenScore = currentScoreRecord.scoringOptions.get(choice);
-        ioStreams.println("You have chosen " + chosenScore.getScoringOptionName());
-        currentScoreRecord.markOptionAsScored(chosenScore);
-        currentScoreRecord.resetAwarded();
+        boolean inputValid = false;
+        do {
+            int choice = ioStreams.readIntegerConsoleInput("Choose one choice!", 0, currentScoreRecord.scoringOptions.size() - 1);
+            ScoringOption chosenScore = currentScoreRecord.scoringOptions.get(choice);
+            ioStreams.println("You have chosen " + chosenScore.getScoringOptionName());
+
+            if(chosenScore.canScoreBeAwarded()) {
+                currentScoreRecord.markOptionAsScored(chosenScore);
+                currentScoreRecord.resetAwarded();
+                inputValid = true;
+            }
+            else {
+                ioStreams.println("Invalid input. Score cannot be awarded. Choose again!");
+                inputValid = false;
+            }
+
+        } while (!inputValid);
     }
 
     private String generateScoreChoicePrompt() {
