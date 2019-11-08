@@ -4,6 +4,7 @@ import com.dominiccobo.cs3004.assignment.Player;
 import com.dominiccobo.cs3004.assignment.TurnMediator;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.SocketConnection;
+import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +29,12 @@ public class Lobby implements LobbyLifecycleEvents {
     private ServerSocket serverSocket;
     private LobbyState lobbyState;
     private TurnMediator turnMediator;
+    private final EventBus eventBus;
 
-    private Lobby(int port) throws IOException {
+    private Lobby(int port, EventBus eventBus) throws IOException {
         this.serverSocket = new ServerSocket(port);
+        this.eventBus = eventBus;
+        eventBus.register(this);
         this.turnMediator = new OrderlyQueuedMultiPlayerTurnMediator(players);
         onLobbyStateChange(LobbyState.CREATED);
         onLobbyCreated();
@@ -117,7 +121,9 @@ public class Lobby implements LobbyLifecycleEvents {
     public static class Factory {
 
         public static Lobby create(int port) throws IOException {
-            return new Lobby(port);
+
+            final EventBus eventBus = new EventBus();
+            return new Lobby(port, eventBus);
         }
     }
 }
