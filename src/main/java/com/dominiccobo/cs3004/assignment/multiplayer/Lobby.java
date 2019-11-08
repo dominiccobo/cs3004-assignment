@@ -1,7 +1,9 @@
 package com.dominiccobo.cs3004.assignment.multiplayer;
 
 import com.dominiccobo.cs3004.assignment.Player;
+import com.dominiccobo.cs3004.assignment.PlayerLifecycleEvents;
 import com.dominiccobo.cs3004.assignment.TurnMediator;
+import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.SocketConnection;
 import com.google.common.eventbus.EventBus;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Processes all of the lifecycle related to a game. Players will join a lobby, providing there
@@ -19,12 +22,13 @@ import java.util.List;
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
-public class Lobby implements LobbyLifecycleEvents {
+public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
 
     private static final Logger LOG = LoggerFactory.getLogger(Lobby.class);
 
     public static final int MAX_PLAYER_COUNT = 3;
 
+    private int playerReadyCount = 0;
     private List<Player> players = new ArrayList<>();
     private ServerSocket serverSocket;
     private LobbyState lobbyState;
@@ -58,7 +62,7 @@ public class Lobby implements LobbyLifecycleEvents {
     public void onPlayerConnectionIncoming(Connection connection) {
         LOG.info("New player connection incoming.");
         try {
-            Player player = new Player(connection, this.turnMediator);
+            Player player = new Player(connection, this.turnMediator, this.eventBus);
             onPlayerConnect(player);
         } catch (IOException e) {
             LOG.error("Could not instantiate new player.", e);
@@ -69,13 +73,13 @@ public class Lobby implements LobbyLifecycleEvents {
     public void onPlayerConnect(Player player) {
         this.players.add(player);
         player.start();
-        onPlayerReady(player);
     }
 
 
     // TODO: needs observer mechanism to interface between this lobby and the player.
     @Override
     public void onPlayerReady(Player playerReady) {
+        playerReadyCount++;
         if (areAllPlayersReady()) {
             LOG.info("All players are ready. Readying lobby.");
             onLobbyReady();
@@ -83,7 +87,7 @@ public class Lobby implements LobbyLifecycleEvents {
     }
 
     private boolean areAllPlayersReady() {
-        return players.size() == MAX_PLAYER_COUNT;
+        return playerReadyCount == MAX_PLAYER_COUNT;
     }
 
     @Override
@@ -116,6 +120,12 @@ public class Lobby implements LobbyLifecycleEvents {
     @Override
     public void onLobbyStateChange(LobbyState lobbyState) {
         this.lobbyState = lobbyState;
+    }
+
+    @Override
+    public void on(PlayerReadyEvent event) {
+        final Optional<Player> readyPlayer = players.stream().filter(player -> player.getAlias().equals(event.playerName)).findFirst();
+        readyPlayer.ifPresent(this::onPlayerReady);
     }
 
     public static class Factory {

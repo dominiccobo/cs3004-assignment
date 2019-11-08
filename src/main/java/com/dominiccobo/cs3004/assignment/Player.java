@@ -1,7 +1,9 @@
 package com.dominiccobo.cs3004.assignment;
 
+import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
+import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +22,12 @@ public class Player extends Thread {
     private Yahtzee gameInstance;
     private final TurnMediator turnMediator;
     private InputOutputStreams inputOutputStreams;
+    private final EventBus eventbus;
 
-    public Player(Connection playerConnection, TurnMediator turnMediator) throws IOException {
+    public Player(Connection playerConnection, TurnMediator turnMediator, EventBus eventbus) throws IOException {
         this.turnMediator = turnMediator;
         this.inputOutputStreams = new InputOutputStreams(playerConnection);
+        this.eventbus = eventbus;
         this.gameInstance = new Yahtzee(inputOutputStreams);
     }
 
@@ -52,5 +56,6 @@ public class Player extends Thread {
     private void getPlayerNameDetails() {
         this.alias = this.inputOutputStreams.readConsoleInput("Choose a name: ");
         this.setName("PlayerThread-" + alias);
+        this.eventbus.post(new PlayerReadyEvent(alias));
     }
 }
