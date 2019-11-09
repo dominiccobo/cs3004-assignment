@@ -1,7 +1,5 @@
 package com.dominiccobo.cs3004.assignment.core.scoring;
 
-import com.dominiccobo.cs3004.assignment.core.ScoringOption;
-
 import java.util.Arrays;
 
 /**
@@ -17,7 +15,7 @@ public class ChanceScoringOption extends ScoringOption {
     @Override
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasOptionBeenScored()) {
-            this.canBeAwarded = true;
+            this.markAsAwardable();
             this.score = Arrays.stream(theDice).sum();
         }
     }

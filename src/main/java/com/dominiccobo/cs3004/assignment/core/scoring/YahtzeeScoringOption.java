@@ -1,7 +1,5 @@
 package com.dominiccobo.cs3004.assignment.core.scoring;
 
-import com.dominiccobo.cs3004.assignment.core.ScoringOption;
-
 import static com.dominiccobo.cs3004.assignment.core.Dice.countDifferentDices;
 
 /**
@@ -23,7 +21,7 @@ public class YahtzeeScoringOption extends ScoringOption {
             //CHECK FOR YAHTZEE
             int countedDifferences = countDifferentDices(theDice);
             if (countedDifferences == 0) {
-                canBeAwarded = true;
+                this.markAsAwardable();
             }
         }
     }

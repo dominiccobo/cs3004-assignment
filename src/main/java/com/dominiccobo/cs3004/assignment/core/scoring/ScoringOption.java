@@ -1,4 +1,4 @@
-package com.dominiccobo.cs3004.assignment.core;
+package com.dominiccobo.cs3004.assignment.core.scoring;
 
 /**
  * Represents a scoring option, which is essentially a row
@@ -6,10 +6,9 @@ package com.dominiccobo.cs3004.assignment.core;
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
-@SuppressWarnings({"WeakerAccess"})
 public abstract class ScoringOption {
-    protected boolean hasScored;
-    protected boolean canBeAwarded;
+    private boolean hasScored;
+    private boolean canBeAwarded;
     protected int score;
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

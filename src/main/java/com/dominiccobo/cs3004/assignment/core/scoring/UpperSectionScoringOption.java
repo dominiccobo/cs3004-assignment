@@ -1,7 +1,6 @@
 package com.dominiccobo.cs3004.assignment.core.scoring;
 
 import com.dominiccobo.cs3004.assignment.core.Dice;
-import com.dominiccobo.cs3004.assignment.core.ScoringOption;
 
 /**
  * Provides reusable scoring evaluation logic for upper section scores.
@@ -21,8 +20,11 @@ public abstract class UpperSectionScoringOption extends ScoringOption {
     @Override
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasOptionBeenScored()) {
-            this.canBeAwarded = true;
-            score = Dice.countNumberOfKind(upperSectionNumber, theDice) * upperSectionNumber;
+            int numberOfKind = Dice.countNumberOfKind(upperSectionNumber, theDice);
+            if(numberOfKind > 0) {
+                this.markAsAwardable();
+                score = numberOfKind * upperSectionNumber;
+            }
         }
     }
 }

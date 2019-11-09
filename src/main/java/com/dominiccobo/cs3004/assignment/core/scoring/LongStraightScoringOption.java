@@ -1,7 +1,6 @@
 package com.dominiccobo.cs3004.assignment.core.scoring;
 
 import com.dominiccobo.cs3004.assignment.core.Dice;
-import com.dominiccobo.cs3004.assignment.core.ScoringOption;
 
 /**
  * Evaluates whether or not a particular dice roll can
@@ -21,7 +20,7 @@ public class LongStraightScoringOption extends ScoringOption {
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasOptionBeenScored()) {
             if(Dice.isIncrementalSequenceInOnes(theDice, 0, 4)) {
-                this.canBeAwarded = true;
+                this.markAsAwardable();
             }
         }
     }

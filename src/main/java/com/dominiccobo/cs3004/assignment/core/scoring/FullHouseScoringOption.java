@@ -1,7 +1,6 @@
 package com.dominiccobo.cs3004.assignment.core.scoring;
 
 import com.dominiccobo.cs3004.assignment.core.Dice;
-import com.dominiccobo.cs3004.assignment.core.ScoringOption;
 
 import java.util.*;
 
@@ -23,7 +22,7 @@ public class FullHouseScoringOption extends ScoringOption {
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasOptionBeenScored()) {
             if (hasTwoOfOneAndThreeOfAnother(theDice)) {
-                this.canBeAwarded = true;
+                this.markAsAwardable();
             }
         }
     }

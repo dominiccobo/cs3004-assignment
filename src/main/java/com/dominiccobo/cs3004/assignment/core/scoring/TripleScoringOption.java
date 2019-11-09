@@ -1,7 +1,6 @@
 package com.dominiccobo.cs3004.assignment.core.scoring;
 
 import com.dominiccobo.cs3004.assignment.core.Dice;
-import com.dominiccobo.cs3004.assignment.core.ScoringOption;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +19,7 @@ public class TripleScoringOption extends ScoringOption {
     public void checkAgainstDice(int[] theDice) {
         if (!this.hasOptionBeenScored()) {
             if (hasThreeInstancesOfValue(theDice)) {
-                this.canBeAwarded = true;
+                this.markAsAwardable();
                 this.score = Arrays.stream(theDice).sum();
             }
         }
