@@ -1,12 +1,9 @@
-package com.dominiccobo.cs3004.assignment.multiplayer.client;
+package com.dominiccobo.cs3004.assignment.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -23,8 +20,10 @@ public class Client {
     private Socket clientSocket;
     private PrintWriter serverInputStream;
     private BufferedReader serverOutputStream;
+    private final PrintWriter consoleOutput;
 
-    public Client(String hostToConnectTo, int portToConnectTo) throws Exception {
+    public Client(String hostToConnectTo, int portToConnectTo, PrintWriter consoleOutput) throws IOException {
+        this.consoleOutput = consoleOutput;
         this.connectToServer(hostToConnectTo, portToConnectTo);
         this.startConversation();
     }
@@ -50,7 +49,7 @@ public class Client {
     private void startConversation() throws IOException {
         while (this.clientSocket.isConnected()) {
             String fromServer = getServerReply();
-            System.out.println(fromServer);
+            consoleOutput.println(fromServer);
 
             if (fromServer.contains("[INPUT]")) {
                 BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
