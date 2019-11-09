@@ -4,8 +4,6 @@ import com.dominiccobo.cs3004.assignment.utils.ConfigurationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-
 /**
  * Client application entrypoint.
  *
@@ -17,7 +15,7 @@ public class ClientApplicationEntryPoint {
 
     public static void main(String[] args) {
         try {
-            new Client(getHostConfiguration(), getPortConfiguration(), new PrintWriter(System.out))
+            new Client(getHostConfiguration(), getPortConfiguration());
         } catch (Exception e) {
             LOG.error("There was an issue with the connection.", e);
         }

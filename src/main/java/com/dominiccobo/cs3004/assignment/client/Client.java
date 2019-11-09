@@ -20,10 +20,8 @@ public class Client {
     private Socket clientSocket;
     private PrintWriter serverInputStream;
     private BufferedReader serverOutputStream;
-    private final PrintWriter consoleOutput;
 
-    public Client(String hostToConnectTo, int portToConnectTo, PrintWriter consoleOutput) throws IOException {
-        this.consoleOutput = consoleOutput;
+    public Client(String hostToConnectTo, int portToConnectTo) throws IOException {
         this.connectToServer(hostToConnectTo, portToConnectTo);
         this.startConversation();
     }
@@ -49,7 +47,7 @@ public class Client {
     private void startConversation() throws IOException {
         while (this.clientSocket.isConnected()) {
             String fromServer = getServerReply();
-            consoleOutput.println(fromServer);
+            System.out.println(fromServer);
 
             if (fromServer.contains("[INPUT]")) {
                 BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
