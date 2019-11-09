@@ -1,5 +1,6 @@
 package com.dominiccobo.cs3004.assignment.client;
 
+import com.dominiccobo.cs3004.assignment.utils.ConfigurationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,23 +24,12 @@ public class ClientApplicationEntryPoint {
     }
 
     private static String getHostConfiguration() {
-        return getConfiguration("YAHTZEE_HOSTNAME", "yahtzee.hostname", "localhost");
+        return ConfigurationHelper.getConfiguration("YAHTZEE_HOSTNAME", "yahtzee.hostname", "localhost");
     }
 
     private static int getPortConfiguration() {
-        String yahtzeePort = getConfiguration("YAHTZEE_PORT", "yahtzee.port", "50000");
+        String yahtzeePort = ConfigurationHelper.getConfiguration("YAHTZEE_PORT", "yahtzee.port", "50000");
         return Integer.parseInt(yahtzeePort);
     }
 
-    private static String getConfiguration(String envVar, String propertyVar, String defaultValue) {
-        String envConfigValue = System.getenv(envVar);
-        String propertyVarConfigValue = System.getProperty(propertyVar);
-        if(envConfigValue != null && envConfigValue.isEmpty()) {
-            return envConfigValue;
-        }
-        if(propertyVarConfigValue != null && propertyVarConfigValue.isEmpty()) {
-            return propertyVarConfigValue;
-        }
-        return defaultValue;
-    }
 }
