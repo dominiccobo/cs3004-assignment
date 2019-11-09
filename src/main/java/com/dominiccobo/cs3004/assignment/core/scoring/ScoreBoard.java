@@ -46,9 +46,11 @@ public class ScoreBoard {
 
 
         for (ScoringOption scoringOption : scoringOptions) {
-            String padding = scoringOption.getScoringOptionName().length() > 12 ? ("\t\t\t") : ("\t\t\t\t\t");
-            String output = scoringOption.getScoringOptionName() + padding + scoringOption.getScore() + "\n";
-            strBuilder.append(output);
+            if(scoringOption.hasOptionBeenScored()) {
+                String padding = scoringOption.getScoringOptionName().length() > 12 ? ("\t\t\t") : ("\t\t\t\t\t");
+                String output = scoringOption.getScoringOptionName() + padding + scoringOption.getScore() + "\n";
+                strBuilder.append(output);
+            }
         }
         return strBuilder.toString();
     }
