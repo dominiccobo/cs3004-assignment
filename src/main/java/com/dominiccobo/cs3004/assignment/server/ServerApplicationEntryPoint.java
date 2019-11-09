@@ -1,6 +1,7 @@
-package com.dominiccobo.cs3004.assignment.multiplayer.server;
+package com.dominiccobo.cs3004.assignment.server;
 
 import com.dominiccobo.cs3004.assignment.multiplayer.Lobby;
+import com.dominiccobo.cs3004.assignment.utils.ConfigurationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +17,13 @@ public class ServerApplicationEntryPoint {
     private static final Logger LOG = LoggerFactory.getLogger(ServerApplicationEntryPoint.class);
 
     public static void main(String[] args) throws IOException {
-        int port = 50000;
+        int port = getPortConfiguration();
         LOG.info("Starting up server on {}.", port);
-        final Lobby lobby = Lobby.Factory.create(port);
+        Lobby.Factory.create(port);
+    }
+
+    private static int getPortConfiguration() {
+        String yahtzeePort = ConfigurationHelper.getConfiguration("YAHTZEE_PORT", "yahtzee.port", "50000");
+        return Integer.parseInt(yahtzeePort);
     }
 }
