@@ -2,7 +2,7 @@ package com.dominiccobo.cs3004.assignment.multiplayer;
 
 import com.dominiccobo.cs3004.assignment.core.Player;
 import com.dominiccobo.cs3004.assignment.core.PlayerLifecycleEvents;
-import com.dominiccobo.cs3004.assignment.core.ScoreBoard;
+import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
 import com.dominiccobo.cs3004.assignment.core.TurnMediator;
 import com.dominiccobo.cs3004.assignment.api.PlayerGameFinishedEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;

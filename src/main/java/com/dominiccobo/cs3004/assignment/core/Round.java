@@ -1,9 +1,7 @@
 package com.dominiccobo.cs3004.assignment.core;
 
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
-import com.dominiccobo.cs3004.assignment.core.scoring.ScoringOption;
-
-import java.util.ArrayList;
+import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
 
 /**
  * Models a round in a game of Yahtzee. A round consists of a player exercising their
@@ -38,7 +36,7 @@ class Round {
         ioStreams.println(Dice.printDice(theDice));
         theDice = offerReRoll(theDice);
 
-        currentScoreRecord.whatCanBeScored(theDice);
+        currentScoreRecord.updateScoringOptionsForDiceRoll(theDice);
         chooseWhatToScore();
         return currentScoreRecord;
     }
@@ -51,38 +49,23 @@ class Round {
     }
 
     private void chooseWhatToScore() {
-        ioStreams.println(generateScoreChoicePrompt());
+        ScoreBoard.ScoringOptionSelection selection = currentScoreRecord.getScoringOptionSelection();
+        String prompt = selection.generateScoreChoicePrompt();
+        ioStreams.println(prompt);
 
         boolean inputValid = false;
         do {
-            int choice = ioStreams.readIntegerConsoleInput("Choose one choice!", 0, currentScoreRecord.scoringOptions.size() - 1);
-            ScoringOption chosenScore = currentScoreRecord.scoringOptions.get(choice);
-            ioStreams.println("You have chosen " + chosenScore.getScoringOptionName());
-
-            if(chosenScore.canScoreBeAwarded()) {
-                currentScoreRecord.markOptionAsScored(chosenScore);
-                currentScoreRecord.resetAwarded();
+            int choice = ioStreams.readIntegerConsoleInput("Choose one choice!");
+            try {
+                selection.select(choice);
+                ioStreams.println("You have chosen " + choice);
+                currentScoreRecord.submitScoringSelection(selection);
                 inputValid = true;
-            }
-            else {
-                ioStreams.println("Invalid input. Score cannot be awarded. Choose again!");
+            } catch (ScoreBoard.InvalidScoringOptionException e) {
                 inputValid = false;
+                ioStreams.println("Invalid score: " + e.getMessage());
             }
-
         } while (!inputValid);
-    }
-
-    private String generateScoreChoicePrompt() {
-        StringBuilder promptBuilder = new StringBuilder();
-        promptBuilder.append("With your roll you can select: \n");
-        ArrayList<ScoringOption> scoringOptions = currentScoreRecord.scoringOptions;
-        for (int i = 0; i < scoringOptions.size(); i++) {
-            ScoringOption scoringOption = scoringOptions.get(i);
-            if (!scoringOption.hasOptionBeenScored() && scoringOption.canScoreBeAwarded()) {
-                promptBuilder.append(i + " for " + scoringOption.getScoringOptionName() + " scoring " + scoringOption.getScore() + " points\n");
-            }
-        }
-        return promptBuilder.toString();
     }
 
     private int[] offerReRoll(int[] theDice) {

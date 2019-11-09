@@ -1,6 +1,7 @@
 package com.dominiccobo.cs3004.assignment.core;
 
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
+import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package com.dominiccobo.cs3004.assignment.multiplayer.client;
+package com.dominiccobo.cs3004.assignment.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

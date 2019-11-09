@@ -6,6 +6,7 @@ import com.dominiccobo.cs3004.assignment.api.PlayerRoundFinishedEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
+import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
 import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
