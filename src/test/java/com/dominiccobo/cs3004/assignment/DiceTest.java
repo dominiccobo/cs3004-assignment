@@ -6,8 +6,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 
 /**
- * TODO: add class description.
- *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
 public class DiceTest {
