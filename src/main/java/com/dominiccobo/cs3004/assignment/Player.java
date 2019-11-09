@@ -1,5 +1,6 @@
 package com.dominiccobo.cs3004.assignment;
 
+import com.dominiccobo.cs3004.assignment.api.PlayerGameFinishedEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerRoundFinishedEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
@@ -26,7 +27,7 @@ public class Player extends Thread {
     private InputOutputStreams inputOutputStreams;
     private final EventBus eventbus;
 
-    public Player(Connection playerConnection, TurnMediator turnMediator, EventBus eventbus) throws IOException {
+    public Player(Connection playerConnection, final TurnMediator turnMediator, final EventBus eventbus) throws IOException {
         this.turnMediator = turnMediator;
         this.inputOutputStreams = new InputOutputStreams(playerConnection);
         this.eventbus = eventbus;
@@ -47,19 +48,17 @@ public class Player extends Thread {
         while(this.gameInstance.hasNext()) {
             if(turnMediator.hasTurn(this)) {
                 turnMediator.lockTurn(this);
-                this.eventbus.post(
-                        new PlayerRoundStartedEvent(this.alias)
-                );
+                this.eventbus.post(new PlayerRoundStartedEvent(this.alias));
+
                 Round roundToPlay = this.gameInstance.next();
                 ScoreBoard resultingScore = roundToPlay.play();
-                this.eventbus.post(new PlayerRoundFinishedEvent(
-                        this.alias,
-                        resultingScore
-                ));
+
+                this.eventbus.post(new PlayerRoundFinishedEvent(this.alias, resultingScore));
                 turnMediator.releaseTurn(this);
             }
         }
         this.gameInstance.printScore();
+        this.eventbus.post(new PlayerGameFinishedEvent(this.alias, null));
     }
 
     private void getPlayerNameDetails() {

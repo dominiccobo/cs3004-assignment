@@ -2,7 +2,9 @@ package com.dominiccobo.cs3004.assignment.multiplayer;
 
 import com.dominiccobo.cs3004.assignment.Player;
 import com.dominiccobo.cs3004.assignment.PlayerLifecycleEvents;
+import com.dominiccobo.cs3004.assignment.ScoreBoard;
 import com.dominiccobo.cs3004.assignment.TurnMediator;
+import com.dominiccobo.cs3004.assignment.api.PlayerGameFinishedEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerRoundFinishedEvent;
 import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +34,7 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
     public static final int MAX_PLAYER_COUNT = 3;
 
     private int playerReadyCount = 0;
+    private HashMap<String, ScoreBoard> finishedPlayers = new HashMap<>();
     private List<Player> players = new ArrayList<>();
     private ServerSocket serverSocket;
     private LobbyState lobbyState;
@@ -106,6 +110,7 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
 
     @Override
     public void onGameEnd() {
+        LOG.info("Game finished. Sending scores to all.");
         onLobbyClosed();
     }
 
@@ -138,6 +143,19 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
     @Override
     public void on(PlayerRoundFinishedEvent event) {
         LOG.info("{} finished with score {}", event.playerName, event.playerScore.buildScoreBoardString());
+    }
+
+    @Override
+    public void on(PlayerGameFinishedEvent event) {
+        LOG.info("{} has finished their game.", event.playerName);
+        finishedPlayers.put(event.playerName, event.scoreBoard);
+        if(allPlayersFinished()) {
+            onGameEnd();
+        }
+    }
+
+    private boolean allPlayersFinished() {
+        return finishedPlayers.size() == MAX_PLAYER_COUNT;
     }
 
     public static class Factory {
