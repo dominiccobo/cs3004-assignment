@@ -1,7 +1,7 @@
 package com.dominiccobo.cs3004.assignment.multiplayer;
 
-import com.dominiccobo.cs3004.assignment.Player;
-import com.dominiccobo.cs3004.assignment.TurnMediator;
+import com.dominiccobo.cs3004.assignment.core.Player;
+import com.dominiccobo.cs3004.assignment.core.TurnMediator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

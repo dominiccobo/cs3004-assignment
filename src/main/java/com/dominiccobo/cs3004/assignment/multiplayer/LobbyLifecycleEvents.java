@@ -1,6 +1,6 @@
 package com.dominiccobo.cs3004.assignment.multiplayer;
 
-import com.dominiccobo.cs3004.assignment.Player;
+import com.dominiccobo.cs3004.assignment.core.Player;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 
 /**

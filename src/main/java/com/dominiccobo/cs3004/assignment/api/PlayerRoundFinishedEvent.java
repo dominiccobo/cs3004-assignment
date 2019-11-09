@@ -1,6 +1,6 @@
 package com.dominiccobo.cs3004.assignment.api;
 
-import com.dominiccobo.cs3004.assignment.ScoreBoard;
+import com.dominiccobo.cs3004.assignment.core.ScoreBoard;
 
 /**
  * Denotes a player having finished their current round.
