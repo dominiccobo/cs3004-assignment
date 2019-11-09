@@ -101,7 +101,7 @@ public class ScoreBoard {
             for (int i = 0; i < scoringOptions.size(); i++) {
                 ScoringOption scoringOption = scoringOptions.get(i);
                 if (!scoringOption.hasOptionBeenScored() && scoringOption.canScoreBeAwarded()) {
-                    String promptToAppend = String.format("%d for %s scoring %d points\n", i, scoringOption.getScoringOptionName(), scoringOption.getScore());
+                    String promptToAppend = String.format("%d for %s scoring %d points%n", i, scoringOption.getScoringOptionName(), scoringOption.getScore());
                     promptBuilder.append(promptToAppend);
                 }
             }
@@ -126,8 +126,8 @@ public class ScoreBoard {
             if(!isValidScoringOption(scoringOption)) {
                 throw new InvalidScoringOptionException("Score has either been chosen or cannot be awarded!");
             }
-            chosenOption.markAsScored();
             chosenOption = scoringOptions.get(scoringOption);
+            chosenOption.markAsScored();
         }
     }
 
