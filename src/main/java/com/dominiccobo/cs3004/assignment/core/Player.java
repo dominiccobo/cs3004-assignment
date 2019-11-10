@@ -65,5 +65,6 @@ public class Player extends Thread implements PlayerLifecycleEvents {
             String format = String.format("Player %s [Score: %d]: %n%s%n", playerName, scoreBoard.calculateCurrentScore(), scoreBoard.buildScoreBoardString());
             inputOutputStreams.println(format);
         });
+        inputOutputStreams.println("[TERMINATE_CONNECTION]");
     }
 }

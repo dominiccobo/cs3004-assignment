@@ -47,6 +47,13 @@ public class Client {
     private void startConversation() throws IOException {
         while (this.clientSocket.isConnected()) {
             String fromServer = getServerReply();
+
+            if(fromServer.contains("[TERMINATE_CONNECTION]")) {
+                this.cleanUp();
+                clientSocket.close();
+                break;
+            }
+
             System.out.println(fromServer);
 
             if (fromServer.contains("[INPUT]")) {

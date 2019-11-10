@@ -52,6 +52,7 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
         this.onLobbyStateChange(LobbyState.OPEN);
         while (lobbyState == LobbyState.OPEN) {
             try {
+                // FIXME: this does not cause a clean exit
                 onPlayerConnectionIncoming(new SocketConnection(serverSocket.accept()));
             } catch (IOException e) {
                 LOG.error("Could not handle incoming player connection.", e);
@@ -148,6 +149,11 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
         finishedPlayers.put(event.playerName, event.scoreBoard);
         if(allPlayersFinished()) {
             eventBus.post(new GameFinishedEvent(finishedPlayers));
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             onGameEnd();
         }
     }
