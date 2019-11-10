@@ -1,5 +1,7 @@
 package com.dominiccobo.cs3004.assignment.connection;
 
+import com.dominiccobo.cs3004.assignment.api.ConnectionProtocol;
+
 import java.io.*;
 
 /**
@@ -31,7 +33,7 @@ public class InputOutputStreams {
 
     public String readConsoleInput(String prompt) {
         String inputLine = "";
-        outputStream.println("[INPUT]" + prompt);
+        outputStream.println(ConnectionProtocol.CONNECTION_INPUT_REQUEST + prompt);
         try {
             InputStreamReader sys = new InputStreamReader(this.inputStream);
             BufferedReader inBuffer = new BufferedReader(sys);

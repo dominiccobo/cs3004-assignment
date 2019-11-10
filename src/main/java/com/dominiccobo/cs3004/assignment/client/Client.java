@@ -1,5 +1,6 @@
 package com.dominiccobo.cs3004.assignment.client;
 
+import com.dominiccobo.cs3004.assignment.api.ConnectionProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +49,7 @@ public class Client {
         while (this.clientSocket.isConnected()) {
             String fromServer = getServerReply();
 
-            if(fromServer.contains("[TERMINATE_CONNECTION]")) {
+            if(fromServer.contains(ConnectionProtocol.TERMINATE_CONNECTION_REQUEST)) {
                 this.cleanUp();
                 clientSocket.close();
                 LOG.info("Disconnecting from server.");
@@ -57,7 +58,7 @@ public class Client {
 
             System.out.println(fromServer);
 
-            if (fromServer.contains("[INPUT]")) {
+            if (fromServer.contains(ConnectionProtocol.CONNECTION_INPUT_REQUEST)) {
                 BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
                 String userInput = consoleInput.readLine();
 

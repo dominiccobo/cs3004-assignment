@@ -69,7 +69,7 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
             if(connections.size() == MAX_PLAYER_COUNT) {
                 InputOutputStreams inputOutputStreams = new InputOutputStreams(connection);
                 inputOutputStreams.println("No room room in this lobby. You have been refused connection!");
-                inputOutputStreams.println("[TERMINATE_CONNECTION]");
+                inputOutputStreams.println(ConnectionProtocol.TERMINATE_CONNECTION_REQUEST);
             }
             else {
                 Player player = new Player(connection, this.turnMediator, this.eventBus);
