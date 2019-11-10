@@ -2,6 +2,7 @@ package com.dominiccobo.cs3004.assignment.multiplayer;
 
 import com.dominiccobo.cs3004.assignment.api.*;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
+import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
 import com.dominiccobo.cs3004.assignment.connection.SocketConnection;
 import com.dominiccobo.cs3004.assignment.core.Player;
 import com.dominiccobo.cs3004.assignment.core.PlayerLifecycleEvents;
@@ -65,8 +66,16 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
     public void onPlayerConnectionIncoming(Connection connection) {
         LOG.info("New player connection incoming.");
         try {
-            Player player = new Player(connection, this.turnMediator, this.eventBus);
-            onPlayerConnect(player);
+            if(connections.size() == MAX_PLAYER_COUNT) {
+                InputOutputStreams inputOutputStreams = new InputOutputStreams(connection);
+                inputOutputStreams.println("No room room in this lobby. You have been refused connection!");
+                inputOutputStreams.println("[TERMINATE_CONNECTION]");
+            }
+            else {
+                Player player = new Player(connection, this.turnMediator, this.eventBus);
+                onPlayerConnect(player);
+            }
+
         } catch (IOException e) {
             LOG.error("Could not instantiate new player.", e);
         }
@@ -78,8 +87,6 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
         player.start();
     }
 
-
-    // TODO: needs observer mechanism to interface between this lobby and the player.
     @Override
     public void onPlayerReady(Player playerReady) {
         playerReadyCount++;

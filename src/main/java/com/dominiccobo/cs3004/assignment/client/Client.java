@@ -51,6 +51,7 @@ public class Client {
             if(fromServer.contains("[TERMINATE_CONNECTION]")) {
                 this.cleanUp();
                 clientSocket.close();
+                LOG.info("Disconnecting from server.");
                 break;
             }
 
