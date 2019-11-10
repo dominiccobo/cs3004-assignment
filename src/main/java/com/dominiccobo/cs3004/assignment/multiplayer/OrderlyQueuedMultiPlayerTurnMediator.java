@@ -1,10 +1,11 @@
 package com.dominiccobo.cs3004.assignment.multiplayer;
 
-import com.dominiccobo.cs3004.assignment.core.Player;
+import com.dominiccobo.cs3004.assignment.core.SessionInstance;
 import com.dominiccobo.cs3004.assignment.core.TurnMediator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,25 +19,31 @@ public class OrderlyQueuedMultiPlayerTurnMediator implements TurnMediator {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrderlyQueuedMultiPlayerTurnMediator.class);
 
-    private final List<Player> players;
+    private final List<SessionInstance> sessionInstances;
     private Integer currentTurnNo = null;
-    private Player playerUsingTerm;
+    private SessionInstance currentSessionInstanceWithTurn;
 
-    public OrderlyQueuedMultiPlayerTurnMediator(List<Player> players) {
-        this.players = players;
+    public OrderlyQueuedMultiPlayerTurnMediator() {
+        sessionInstances = new ArrayList<>();
+    }
+
+    @Override
+    public void registerSession(SessionInstance sessionInstance) {
+        LOG.info("Adding session instance {}", sessionInstance.getIdentifier());
+        sessionInstances.add(sessionInstance);
     }
 
     @Override
     public synchronized void start() {
         this.currentTurnNo = 0;
-        playerUsingTerm = players.get(currentTurnNo);
-        LOG.info("Mediating game start. First player is {}", playerUsingTerm.getAlias());
+        currentSessionInstanceWithTurn = sessionInstances.get(currentTurnNo);
+        LOG.info("Mediating game start. First session is {}", currentSessionInstanceWithTurn.getIdentifier());
         notifyAll();
     }
 
     @Override
-    public synchronized boolean hasTurn(Player player) {
-        while (!doesHaveRightToTurn(player)) {
+    public synchronized boolean hasTurn(SessionInstance sessionInstance) {
+        while (!doesHaveRightToTurn(sessionInstance)) {
             try {
                 wait();
                 return false;
@@ -47,38 +54,33 @@ public class OrderlyQueuedMultiPlayerTurnMediator implements TurnMediator {
         return true;
     }
 
-    private synchronized Boolean doesHaveRightToTurn(Player player) {
+    private synchronized Boolean doesHaveRightToTurn(SessionInstance sessionInstance) {
         if (currentTurnNo == null) {
             return false;
         }
-        Optional<Player> currentPlayerWithTurn = Optional.ofNullable(players.get(currentTurnNo));
+        Optional<SessionInstance> currentPlayerWithTurn = Optional.ofNullable(sessionInstances.get(currentTurnNo));
         //noinspection OptionalIsPresent
         if (!currentPlayerWithTurn.isPresent()) {
             return false;
         }
-        return currentPlayerWithTurn.get().equals(player);
+        return currentPlayerWithTurn.get().equals(sessionInstance);
     }
 
     @Override
-    public synchronized void lockTurn(Player player) {
-        LOG.info("Player {} has locked their turn.", player.getAlias());
-        playerUsingTerm = player;
+    public synchronized void lockTurn(SessionInstance sessionInstance) {
+        LOG.info("Player {} has locked their turn.", sessionInstance.getIdentifier());
+        currentSessionInstanceWithTurn = sessionInstance;
         notifyAll();
     }
 
     @Override
-    public synchronized void releaseTurn(Player player) {
-        LOG.info("Player {} has released their turn.", player.getAlias());
-        playerUsingTerm = null;
+    public synchronized void releaseTurn(SessionInstance sessionInstance) {
+        LOG.info("Player {} has released their turn.", sessionInstance.getIdentifier());
+        currentSessionInstanceWithTurn = null;
         currentTurnNo++;
-        if (currentTurnNo > players.size() - 1) {
+        if (currentTurnNo > sessionInstances.size() - 1) {
             currentTurnNo = 0;
         }
         notifyAll();
-        try {
-            wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

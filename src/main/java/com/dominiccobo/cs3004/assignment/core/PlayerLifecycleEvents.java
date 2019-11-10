@@ -7,7 +7,7 @@ import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
 import com.google.common.eventbus.Subscribe;
 
 /**
- * TODO: add class description.
+ * Contains all lifecycle events.
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */

@@ -1,13 +1,10 @@
 package com.dominiccobo.cs3004.assignment.core;
 
-import com.dominiccobo.cs3004.assignment.api.PlayerGameFinishedEvent;
-import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
-import com.dominiccobo.cs3004.assignment.api.PlayerRoundFinishedEvent;
-import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
+import com.dominiccobo.cs3004.assignment.api.*;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
-import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,53 +15,55 @@ import java.io.IOException;
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
  */
-public class Player extends Thread {
+public class Player extends Thread implements PlayerLifecycleEvents {
 
     private static final Logger LOG = LoggerFactory.getLogger(Player.class);
 
-    private String alias;
     private Yahtzee gameInstance;
-    private final TurnMediator turnMediator;
     private InputOutputStreams inputOutputStreams;
+    private final TurnMediator turnMediator;
     private final EventBus eventbus;
 
     public Player(Connection playerConnection, final TurnMediator turnMediator, final EventBus eventbus) throws IOException {
-        this.turnMediator = turnMediator;
         this.inputOutputStreams = new InputOutputStreams(playerConnection);
+        this.turnMediator = turnMediator;
         this.eventbus = eventbus;
-        this.gameInstance = new Yahtzee(inputOutputStreams);
-    }
-
-    public final String getAlias() {
-        return alias;
+        this.eventbus.register(this);
     }
 
     @Override
     public void run() {
-        getPlayerNameDetails();
-
-        LOG.info("{} is ready.", alias);
-        this.gameInstance.playGame(alias);
-
-        while(this.gameInstance.hasNext()) {
-            if(turnMediator.hasTurn(this)) {
-                turnMediator.lockTurn(this);
-                this.eventbus.post(new PlayerRoundStartedEvent(this.alias));
-
-                Round roundToPlay = this.gameInstance.next();
-                ScoreBoard resultingScore = roundToPlay.play();
-
-                this.eventbus.post(new PlayerRoundFinishedEvent(this.alias, resultingScore));
-                turnMediator.releaseTurn(this);
-            }
-        }
-        this.gameInstance.printScore();
-        this.eventbus.post(new PlayerGameFinishedEvent(this.alias, null));
+        this.gameInstance = new Yahtzee(inputOutputStreams, turnMediator, eventbus);
+        Thread gameThread = new Thread(gameInstance);
+        gameThread.setName("GameThread");
+        gameThread.run();
     }
 
-    private void getPlayerNameDetails() {
-        this.alias = this.inputOutputStreams.readConsoleInput("Choose a name: ");
-        this.setName("PlayerThread-" + alias);
-        this.eventbus.post(new PlayerReadyEvent(alias));
+    @Override
+    public void on(PlayerReadyEvent event) {
+        inputOutputStreams.println(String.format("[GLOBAL] %s has joined the game.", event.playerName));
+    }
+
+    @Override
+    public void on(PlayerRoundStartedEvent event) {
+        inputOutputStreams.println(String.format("[GLOBAL] %s has started their round.", event.playerName));
+    }
+
+    @Override
+    public void on(PlayerRoundFinishedEvent event) {
+        inputOutputStreams.println(String.format("[GLOBAL] %s has finished their round. %n%s", event.playerName, event.playerScore.buildScoreBoardString()));
+    }
+
+    @Override
+    public void on(PlayerGameFinishedEvent event) {
+        inputOutputStreams.println(String.format("[GLOBAL] %s has finished playing their game.", event.playerName));
+    }
+
+    @Subscribe
+    public void on(GameFinishedEvent event) {
+        event.playerScores.forEach((playerName, scoreBoard) -> {
+            String format = String.format("Player %s [Score: %d]: %n%s%n", playerName, scoreBoard.calculateCurrentScore(), scoreBoard.buildScoreBoardString());
+            inputOutputStreams.println(format);
+        });
     }
 }

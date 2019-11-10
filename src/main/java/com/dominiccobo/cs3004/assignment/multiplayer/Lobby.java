@@ -1,25 +1,20 @@
 package com.dominiccobo.cs3004.assignment.multiplayer;
 
-import com.dominiccobo.cs3004.assignment.core.Player;
-import com.dominiccobo.cs3004.assignment.core.PlayerLifecycleEvents;
-import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
-import com.dominiccobo.cs3004.assignment.core.TurnMediator;
-import com.dominiccobo.cs3004.assignment.api.PlayerGameFinishedEvent;
-import com.dominiccobo.cs3004.assignment.api.PlayerReadyEvent;
-import com.dominiccobo.cs3004.assignment.api.PlayerRoundFinishedEvent;
-import com.dominiccobo.cs3004.assignment.api.PlayerRoundStartedEvent;
+import com.dominiccobo.cs3004.assignment.api.*;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.SocketConnection;
+import com.dominiccobo.cs3004.assignment.core.Player;
+import com.dominiccobo.cs3004.assignment.core.PlayerLifecycleEvents;
+import com.dominiccobo.cs3004.assignment.core.SessionIdentifier;
+import com.dominiccobo.cs3004.assignment.core.TurnMediator;
+import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
 import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Processes all of the lifecycle related to a game. Players will join a lobby, providing there
@@ -35,7 +30,8 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
 
     private int playerReadyCount = 0;
     private HashMap<String, ScoreBoard> finishedPlayers = new HashMap<>();
-    private List<Player> players = new ArrayList<>();
+    private Set<Player> connections = new HashSet<>();
+    private Map<String, SessionIdentifier> playerToSessionIdentifier = new IdentityHashMap<>();
     private ServerSocket serverSocket;
     private LobbyState lobbyState;
     private TurnMediator turnMediator;
@@ -45,7 +41,7 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
         this.serverSocket = new ServerSocket(port);
         this.eventBus = eventBus;
         eventBus.register(this);
-        this.turnMediator = new OrderlyQueuedMultiPlayerTurnMediator(players);
+        this.turnMediator = new OrderlyQueuedMultiPlayerTurnMediator();
         onLobbyStateChange(LobbyState.CREATED);
         onLobbyCreated();
     }
@@ -77,7 +73,7 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
 
     @Override
     public void onPlayerConnect(Player player) {
-        this.players.add(player);
+        connections.add(player);
         player.start();
     }
 
@@ -131,8 +127,9 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
 
     @Override
     public void on(PlayerReadyEvent event) {
-        final Optional<Player> readyPlayer = players.stream().filter(player -> player.getAlias().equals(event.playerName)).findFirst();
-        readyPlayer.ifPresent(this::onPlayerReady);
+        LOG.info("Player {} [{}] is ready", event.playerName, event.sessionIdentifier);
+        playerToSessionIdentifier.put(event.playerName, event.sessionIdentifier);
+        this.onPlayerReady(null); // FIXME:
     }
 
     @Override
@@ -150,6 +147,7 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
         LOG.info("{} has finished their game.", event.playerName);
         finishedPlayers.put(event.playerName, event.scoreBoard);
         if(allPlayersFinished()) {
+            eventBus.post(new GameFinishedEvent(finishedPlayers));
             onGameEnd();
         }
     }

@@ -11,8 +11,9 @@ package com.dominiccobo.cs3004.assignment.core;
  */
 public interface TurnMediator {
 
+    void registerSession(SessionInstance sessionInstance);
     void start();
-    boolean hasTurn(Player player);
-    void lockTurn(Player player);
-    void releaseTurn(Player player);
+    boolean hasTurn(SessionInstance sessionInstance);
+    void lockTurn(SessionInstance sessionInstance);
+    void releaseTurn(SessionInstance sessionInstance);
 }
