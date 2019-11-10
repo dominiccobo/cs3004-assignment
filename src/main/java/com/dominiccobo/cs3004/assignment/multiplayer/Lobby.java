@@ -147,7 +147,8 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
 
     @Override
     public void on(PlayerRoundFinishedEvent event) {
-        LOG.info("{} finished with score {}", event.playerName, event.playerScore.buildScoreBoardString());
+        String playerScore = (event.playerScore.buildScoreBoardString() != null) ? (event.playerScore.buildScoreBoardString()) : "";
+        LOG.info("{} finished with score {}", event.playerName, playerScore);
     }
 
     @Override
@@ -159,7 +160,8 @@ public class Lobby implements LobbyLifecycleEvents, PlayerLifecycleEvents {
             try {
                 Thread.sleep(4000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error("Could not sleep game termination", e);
+                Thread.currentThread().interrupt();
             }
             onGameEnd();
         }
