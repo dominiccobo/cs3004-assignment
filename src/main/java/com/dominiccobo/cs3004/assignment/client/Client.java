@@ -45,6 +45,7 @@ public class Client {
         serverOutputStream.close();
     }
 
+
     private void startConversation() throws IOException {
         while (this.clientSocket.isConnected()) {
             String fromServer = getServerReply();
@@ -59,23 +60,7 @@ public class Client {
             System.out.println(fromServer);
 
             if (fromServer.contains(ConnectionProtocol.CONNECTION_INPUT_REQUEST)) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
-                        String userInput = null;
-                        try {
-                            userInput = consoleInput.readLine();
-                        } catch (IOException e) {
-                            LOG.error("Could not handle input", e);
-                        }
-
-                        if (userInput != null) {
-                            LOG.debug("Client input was: {}", userInput);
-                            sendMessageToServer(userInput);
-                        }
-                    }
-                }).start();
+                new Thread(new NonBlockingInputThread(serverInputStream)).start();
             }
         }
         this.cleanUp();
@@ -85,8 +70,34 @@ public class Client {
         return serverOutputStream.readLine();
     }
 
-    private void sendMessageToServer(String fromUser) {
-        serverInputStream.println(fromUser);
-    }
 
+
+    private static class NonBlockingInputThread implements Runnable {
+
+        private final PrintWriter printWriter;
+
+        private NonBlockingInputThread(final PrintWriter printWriter) {
+            this.printWriter = printWriter;
+        }
+
+        @Override
+        public void run() {
+            BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
+            String userInput = null;
+            try {
+                userInput = consoleInput.readLine();
+            } catch (IOException e) {
+                LOG.error("Could not handle input", e);
+            }
+
+            if (userInput != null) {
+                LOG.debug("Client input was: {}", userInput);
+                sendMessageToServer(userInput);
+            }
+        }
+
+        private void sendMessageToServer(String fromUser) {
+            printWriter.println(fromUser);
+        }
+    }
 }
