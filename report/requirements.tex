@@ -1,3 +1,44 @@
 \section{Requirements}
 
 %Briefly specify the requirements of your program with a short justification of how these relate to the assignment.  
+
+The assignment brief specifies the following mandatory requirements:
+
+\begin{description}
+	\item [Requirement 1] The provided Yahtzee code shall be adapted to enable a client-server approach.
+	
+	The server application shall not progress the state of the game without the input from a separately running client application.
+	
+	\item [Requirement 2] The server shall implement a multi-threaded Socket Connection handling.
+	
+	The communication between the server and the client must consist of communication over network sockets using the Java Socket API \it{java.net.Socket}.
+	
+	Multiple socket connections must be handled using the Java Thread API \it{java.lang.Thread}.
+		
+	\item   [Requirement 3] Every player must play the same round before any player can proceed. 
+	 
+	 If \it{PLAYER A} is on finishes \it{ROUND 1}, \it{PLAYER A} may not continue to \it{ROUND 2} until \it{PLAYER B} has completed \it{ROUND 1}.
+	
+	\item  [Requirement 4] All players scores must be shared at the end of the game, with the top
+	player highlighted.
+	
+	After all players complete their thirteen (13) rounds, in a circular turning rota, each player shall publish their score.
+	
+	The published score must agree and highlight the top scorer(s).	
+	
+	\item  [Requirement 5] There must be three or more players. 
+	
+	The game must accept three or more players, each originating from their own connected client application.
+	
+	\item  [Requirement 6] The game and clients must exit cleanly when all players finish.
+	
+	A protocol must exist by which players understand the game is finished , the server no longer
+	requires their presence, and as such they must disconnect.
+	
+	\item  [Requirement 7] Clear mechanism to identify the correct functionality of the game and all the above.
+	
+	A clear mechanism to identify the existing Yahtzee game functionality exists and works as described in the introduction.
+	
+	A mechanism to identify that each and every requirement above is met must be implemented.
+
+\end{description}
