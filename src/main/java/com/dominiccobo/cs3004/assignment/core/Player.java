@@ -3,12 +3,16 @@ package com.dominiccobo.cs3004.assignment.core;
 import com.dominiccobo.cs3004.assignment.api.*;
 import com.dominiccobo.cs3004.assignment.connection.Connection;
 import com.dominiccobo.cs3004.assignment.connection.InputOutputStreams;
+import com.dominiccobo.cs3004.assignment.core.scoring.ScoreBoard;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Each player has an associated connection of players.
@@ -61,10 +65,32 @@ public class Player extends Thread implements PlayerLifecycleEvents {
 
     @Subscribe
     public void on(GameFinishedEvent event) {
+        Set<String> highScorers = getTopScorers(event);
         event.playerScores.forEach((playerName, scoreBoard) -> {
-            String format = String.format("Player %s [Score: %d]: %n%s%n", playerName, scoreBoard.calculateCurrentScore(), scoreBoard.buildScoreBoardString());
+            String topScorer = highScorers.contains(playerName) ? ("[TOP-SCORE]") : ("");
+            String format = String.format("%s Player %s [Score: %d]: %n%s%n", topScorer, playerName, scoreBoard.calculateCurrentScore(), scoreBoard.buildScoreBoardString());
             inputOutputStreams.println(format);
+
         });
         inputOutputStreams.println(ConnectionProtocol.TERMINATE_CONNECTION_REQUEST);
+    }
+
+    private Set<String> getTopScorers(GameFinishedEvent event) {
+        Set<String> highScorers = new HashSet<>();
+        int currentMaxScore = 0;
+        for (Map.Entry<String, ScoreBoard> entry : event.playerScores.entrySet()) {
+            String player = entry.getKey();
+            ScoreBoard scoreBoard = entry.getValue();
+            final int score = scoreBoard.calculateCurrentScore();
+            if (score > currentMaxScore) {
+                currentMaxScore = score;
+                highScorers.clear();
+                highScorers.add(player);
+            }
+            if(score == currentMaxScore) {
+                highScorers.add(player);
+            }
+        }
+        return highScorers;
     }
 }
