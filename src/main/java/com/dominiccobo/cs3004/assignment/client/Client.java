@@ -59,13 +59,23 @@ public class Client {
             System.out.println(fromServer);
 
             if (fromServer.contains(ConnectionProtocol.CONNECTION_INPUT_REQUEST)) {
-                BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
-                String userInput = consoleInput.readLine();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
+                        String userInput = null;
+                        try {
+                            userInput = consoleInput.readLine();
+                        } catch (IOException e) {
+                            LOG.error("Could not handle input", e);
+                        }
 
-                if (userInput != null) {
-                    LOG.debug("Client input was: {}", userInput);
-                    sendMessageToServer(userInput);
-                }
+                        if (userInput != null) {
+                            LOG.debug("Client input was: {}", userInput);
+                            sendMessageToServer(userInput);
+                        }
+                    }
+                }).start();
             }
         }
         this.cleanUp();
