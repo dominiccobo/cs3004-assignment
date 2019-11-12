@@ -142,24 +142,26 @@ This intra-player, intra-thread model coordination is defined by sharing an Appl
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{ | l | l | }
+	\begin{tabular}{ | l | p{10cm} | }
 		\hline
 		Event Name & Action  \\
 		\hline
 		\hline
-		Lobby Created & \\
+		Lobby Created & Is the main entry point for a server; triggers the creation of the Server socket and the loop which will stay alive whilst the server state is not set as shutting down \\
 		\hline
-		Player connection incoming & \\
+		Player connection incoming & Handles the forwarded input from accepted connections and attempts to construct a new player if there is space in the lobby. \\
 		\hline
-		Player connect & \\
+		Player connect & Accepts the constructed player and finalises their addition to the lobby. \\
 		\hline
-		Player ready & \\
+		Player ready & Triggered once a player has instantiated a game of Yahtzee with their alias. \\
 		\hline
-		Lobby ready & \\ 
+		Lobby ready & Triggered when all players are ready. \\ 
 		\hline
 		Game start  & \\
 		\hline
-		Lobby closed & \\
+		Game end  & Triggered on termination of the game. Causes the lobby closure process to begin. \\
+		\hline
+		Lobby closed & Closes all connections and finally exits the application. \\
 		\hline
 	\end{tabular}
 	\caption{The Lobby Life-cycle}
@@ -168,20 +170,20 @@ This intra-player, intra-thread model coordination is defined by sharing an Appl
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{ | l | l | l | }
+	\begin{tabular}{ | l | l | p{10cm} | }
 		\hline
 		Event Name & Interest Entity & Action  \\
 		\hline
 		\hline
-		GameFinishedEvent & Player & \\ 
+		GameFinishedEvent & Player & Triggers end of game score display\\ 
 		\hline
-		PlayerGameFinishedEvent & Lobby & \\
+		PlayerGameFinishedEvent & Lobby & Allows lobby to understand when all players have finished and begin Game Finished sequence, and then shutdown \\
 		\hline
-		PlayerReadyEvent & Lobby & \\
+		PlayerReadyEvent & Lobby & Allows lobby to understand when to inform mediator to start game \\
 		\hline
-		PlayerRoundFinishedEvent & Lobby & \\
+		PlayerRoundFinishedEvent & Lobby, Player & Allows other players and lobby to understand when a player has finished their round \\
 		\hline
-		PlayerRoundStartedEvent & Lobby & \\
+		PlayerRoundStartedEvent & Lobby, Player & Allows other players and lobby to understand when a player has started their round \\
 		\hline
 	\end{tabular}
 	\caption{Driving events, their subscribing entities and resulting actions}
