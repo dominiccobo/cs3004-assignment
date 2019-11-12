@@ -125,6 +125,7 @@ This intra-player, intra-thread model coordination is defined by sharing an Appl
 				\hline
 				(n) Client & (1) Server  \\
 				\hline
+				\hline
 				&  'TERMINATE CONNECTION' String sent \\
 				\hline
 				Recognition of 'TERMINATE CONNECTION' & \\ 
@@ -137,4 +138,52 @@ This intra-player, intra-thread model coordination is defined by sharing an Appl
 	\end{tabular}
 	\caption{Disconnection Protocol}
 	\label{tab:disconnectionProtocol}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | l | l | }
+		\hline
+		Event Name & Action  \\
+		\hline
+		\hline
+		Lobby Created & \\
+		\hline
+		Player connection incoming & \\
+		\hline
+		Player connect & \\
+		\hline
+		Player ready & \\
+		\hline
+		Lobby ready & \\ 
+		\hline
+		Game start  & \\
+		\hline
+		Lobby closed & \\
+		\hline
+	\end{tabular}
+	\caption{The Lobby Life-cycle}
+	\label{tab:lobbyLifecycle}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | l | l | l | }
+		\hline
+		Event Name & Interest Entity & Action  \\
+		\hline
+		\hline
+		GameFinishedEvent & Player & \\ 
+		\hline
+		PlayerGameFinishedEvent & Lobby & \\
+		\hline
+		PlayerReadyEvent & Lobby & \\
+		\hline
+		PlayerRoundFinishedEvent & Lobby & \\
+		\hline
+		PlayerRoundStartedEvent & Lobby & \\
+		\hline
+	\end{tabular}
+	\caption{Driving events, their subscribing entities and resulting actions}
+	\label{tab:eventsEntitiesAndActions}
 \end{table}
