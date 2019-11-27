@@ -1,0 +1,4 @@
+2019-11-27 18:08:14.775  INFO [           main] c.d.c.a.c.Client                         : Connecting to server localhost:50000
+2019-11-27 18:08:14.820  INFO [           main] c.d.c.a.c.Client                         : Successfully connected to localhost:50000
+[INPUT]Choose a name:
+player1
