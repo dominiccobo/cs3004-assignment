@@ -1,0 +1,38 @@
+\subsection{Requirement 3 - Each player must play the same round before proceeding.} 
+
+\subsubsection{Expectation} 
+Presence of code restricting players from progressing when they do not hold a turn, sleeping their associated thread and waking it as required.
+
+\subsubsection{Implementation}
+
+\begin{description}
+	\item[c.d.c.a.core.Yahtzee]  Implements a basic iterator, responsible for iterating through a list of rounds. This iterator waits based on the injected instance of a TurnMediator which it queries to understand whether to proceed with playing the round or sleep and wait until notified for its turn.
+	
+	\item[c.d.c.a.core.TurnMediator] Provides an abstraction of the logic which oversees players progression through the rounds.
+	
+	\item[c.d.c.a.multiplayer.Lobby] Defines logic which does not allow any player to start until all players are ready.
+	
+	\item[c.d.c.a.multiplayer.OrderlyQueuedMultiPlayerTurnMediator] Provides an implementation of the Turn Mediator which acts based on threads and an understanding of the registered game instances.
+	
+\end{description} 
+
+\subsubsection{Demonstrating log output} 
+\begin{figure}[H]
+	\lstinputlisting[showstringspaces=false]{logs/requirement3-server.txt}
+	\caption{Log output for Requirement 3 - Server log}
+\end{figure}
+
+\begin{figure}[H]
+	\lstinputlisting[showstringspaces=false]{logs/requirement3-player1.txt} 
+	\caption{Log output for Requirement 3 - Player 1 log}
+\end{figure}
+
+\begin{figure}[H]
+	\lstinputlisting[showstringspaces=false]{logs/requirement3-player2.txt} 
+	\caption{Log output for Requirement 3 - Player 2 log}
+\end{figure}
+
+\begin{figure}[H]
+	\lstinputlisting[showstringspaces=false]{logs/requirement3-player3.txt} 
+	\caption{Log output for Requirement 3 - Player 3 log}
+\end{figure}

@@ -1,0 +1,23 @@
+\subsection{Requirement  2 - Must use native Java Socket and Threading APIs } 
+
+\subsubsection{Expectation} 
+ Presence of code calling the \textit{java.net.Socket} API for network connectivity, \textit{java.lang.Thread} or \textit{java.lang.Runnable} and thread coordination methods inherited \textit{java.lang.Object} class ( \textit{notify(), notifyAll(), wait()})
+
+\subsubsection{Implementation}
+
+\begin{description}
+	\item[c.d.c.a.core.Player] Provides the implementation of a thread created handling the input and output streams for a connected player. In the multiplayer, socket-based approach this keeps the socket alive.
+	
+	\item[c.d.c.a.core.Yahtzee]  Implementation of the game logic, called within a the runnable implementation. The decoupling of a the player connection thread from the game instance thread allows a connection to always accept input and output whilst the game progress to be paused based on whether the player holds their turn.
+	
+	\item[c.d.c.a.multiplayer.OrderlyQueuedMultiPlayerTurnMediator] Provides mediation between all game instances, waking up all game threads and allowing those with a turn to stay awake whilst others wait on the completion of said turn.
+	
+	\item[c.d.c.a.client.Client] Provides implementation of a simple socket connection to the Server.
+	
+	\item[c.d.c.a.multiplayer.Lobby] Provides implementation of the server side socket handling with the associated instantiation of the threads required to keep incoming connections alive. 
+	
+\end{description} 
+
+\subsubsection{Demonstrating log output} 
+
+No logs as this is demonstrated within the code.

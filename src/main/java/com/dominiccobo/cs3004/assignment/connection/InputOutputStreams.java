@@ -1,6 +1,8 @@
 package com.dominiccobo.cs3004.assignment.connection;
 
 import com.dominiccobo.cs3004.assignment.api.ConnectionProtocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
@@ -8,10 +10,11 @@ import java.io.*;
  * Collection of utilities relating to handling console input ...
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
- * @author Simon Taylor (some networking lecturer at brunel)
  */
 @SuppressWarnings("WeakerAccess")
 public class InputOutputStreams {
+
+    private static final Logger LOG = LoggerFactory.getLogger(InputOutputStreams.class);
 
     private final InputStream inputStream;
     private final PrintStream outputStream;
@@ -27,19 +30,23 @@ public class InputOutputStreams {
     }
 
     public void println(String line) {
+        LOG.trace("Sending message:  {}", line);
         outputStream.println(line);
         outputStream.flush();
     }
 
     public String readConsoleInput(String prompt) {
         String inputLine = "";
-        outputStream.println(ConnectionProtocol.CONNECTION_INPUT_REQUEST + prompt);
+        final String message = ConnectionProtocol.CONNECTION_INPUT_REQUEST + prompt;
+        LOG.trace("Requesting input [{}]", message);
+        outputStream.println(message);
         try {
             InputStreamReader sys = new InputStreamReader(this.inputStream);
             BufferedReader inBuffer = new BufferedReader(sys);
             inputLine = inBuffer.readLine();
+            LOG.debug("Received input: {}", inputLine);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Could not read console input ", e);
         }
         return inputLine;
     }

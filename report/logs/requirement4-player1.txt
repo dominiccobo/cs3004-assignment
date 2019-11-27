@@ -1,0 +1,48 @@
+No scoring options available. Next round.
+[GLOBAL] player1 has finished playing their game.
+[GLOBAL] player2 has finished playing their game.
+[GLOBAL] player3 has finished playing their game.
+ Player player1 [Score: 129]:
+	Current Score
+Option				Score
+Short Straight			30
+Triple					16
+Long Straight			40
+Chance					15
+Ones					2
+Twos					2
+Threes					3
+Fours					4
+Fives					5
+Sixes					12
+
+
+ Player player2 [Score: 137]:
+	Current Score
+Option				Score
+Short Straight			30
+Triple					17
+Long Straight			40
+Chance					20
+Ones					1
+Twos					2
+Threes					3
+Fours					8
+Fives					10
+Sixes					6
+
+
+[TOP-SCORE] Player player3 [Score: 170]:
+	Current Score
+Option				Score
+Short Straight			30
+Triple					14
+Long Straight			40
+Full House					25
+Chance					23
+Ones					1
+Twos					2
+Threes					9
+Fours					4
+Fives					10
+Sixes					12

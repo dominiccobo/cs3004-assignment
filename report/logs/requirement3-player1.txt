@@ -1,0 +1,38 @@
+2019-11-27 18:08:14.775  INFO [           main] c.d.c.a.c.Client                         : Connecting to server localhost:50000
+2019-11-27 18:08:14.820  INFO [           main] c.d.c.a.c.Client                         : Successfully connected to localhost:50000
+[INPUT]Choose a name:
+player1
+2019-11-27 18:08:28.932 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: player1
+[GLOBAL] player1 has joined the game.
+__  __      __    __
+\ \/ /___ _/ /_  / /_____  ___  ___
+ \  / __ `/ __ \/ __/_  / / _ \/ _ \
+ / / /_/ / / / / /_  / /_/  __/  __/
+/_/\__,_/_/ /_/\__/ /___/\___/\___/
+
+Welcome player1
+[GLOBAL] player2 has joined the game.
+[GLOBAL] player3 has joined the game.
+
+
+Round 1 of 13
+Current score is 0
+Your current scoring status is:
+You rolled: 4	2	3	2	5
+3 chances to re roll.
+[INPUT]How many dice do you want to re roll? (1-5 - 0 for no dice)
+0
+2019-11-27 18:10:03.039 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: 0
+With your roll you can select:
+2 for Short Straight scoring 30 points
+4 for Long Straight scoring 40 points
+6 for Chance scoring 16 points
+8 for Twos scoring 4 points
+9 for Threes scoring 3 points
+10 for Fours scoring 4 points
+11 for Fives scoring 5 points
+
+[INPUT]Choose one choice!
+4
+2019-11-27 18:10:06.928 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: 4
+You have chosen 4

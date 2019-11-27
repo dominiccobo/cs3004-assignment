@@ -1,0 +1,10 @@
+2019-11-27 18:07:05.290  INFO [           main] c.d.c.a.s.ServerApplicationEntryPoint    : Starting up server on 50000.
+2019-11-27 18:07:05.399  INFO [           main] c.d.c.a.m.Lobby                          : Lobby created. Awaiting players.
+2019-11-27 18:08:14.818  INFO [           main] c.d.c.a.m.Lobby                          : New player connection incoming.
+2019-11-27 18:08:14.843  INFO [       Thread-1] a.m.OrderlyQueuedMultiPlayerTurnMediator : Adding session instance de287504-69fd-46c4-bd9a-07e7d8089181
+2019-11-27 18:08:14.846  INFO [       Thread-1] c.d.c.a.c.Yahtzee                        : Starting player game
+2019-11-27 18:08:22.012  INFO [           main] c.d.c.a.m.Lobby                          : New player connection incoming.
+2019-11-27 18:08:22.013  INFO [       Thread-3] a.m.OrderlyQueuedMultiPlayerTurnMediator : Adding session instance ada98ed5-ea1b-4335-8d30-6470ac6de765
+2019-11-27 18:08:22.013  INFO [       Thread-3] c.d.c.a.c.Yahtzee                        : Starting player game
+2019-11-27 18:08:26.358  INFO [           main] c.d.c.a.m.Lobby                          : New player connection incoming.
+2019-11-27 18:08:26.361  INFO [       Thread-5] a.m.OrderlyQueuedMultiPlayerTurnMediator : Adding session instance f313769c-6d67-4509-b3c1-f85b4246bbb3

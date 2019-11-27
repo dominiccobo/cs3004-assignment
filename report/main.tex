@@ -2,7 +2,10 @@
 \usepackage{inputenc}
 \usepackage{graphicx}
 \usepackage{geometry}
+\usepackage{float}
+\usepackage{listings}
 \usepackage[backend=bibtex, style=authoryear, sorting=nyt]{biblatex}
+\usepackage[format=hang,font={small,it},labelfont={bf,it},labelsep=space]{caption} 
 \addbibresource{citations.bib}
 
 \newcommand{\fypUniversity}{Brunel University London}
@@ -21,6 +24,14 @@
 	right=20mm, 
 	top=15mm,
 	bottom=25mm
+}
+
+\lstset{
+	basicstyle=\ttfamily,
+	columns=fullflexible,
+	frame=single,
+	breaklines=true,
+	postbreak=\mbox{{$\hookrightarrow$}\space}
 }
 
 \begin{document}

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Represents the scoreboard.
  *
- * @author Simon Taylor 2019
+ * @author Simon Taylor 2019 - original logic, no longer present.
  * @author Dominic Cobo (contact@dominiccobo.com) - modiified
  */
 public class ScoreBoard {
@@ -95,6 +95,12 @@ public class ScoreBoard {
 
         ScoringOptionSelection(List<ScoringOption> scoringOptions) {
             this.scoringOptions = scoringOptions;
+        }
+
+        public boolean isAnyScoringOptionAvailable() {
+            return scoringOptions.stream().anyMatch(scoringOption -> {
+                return !scoringOption.hasOptionBeenScored() && scoringOption.canScoreBeAwarded();
+            });
         }
 
         public String generateScoreChoicePrompt() {

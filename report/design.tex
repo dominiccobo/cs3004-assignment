@@ -57,7 +57,7 @@ On the acceptance of each connection and successive creation each player by the 
 
 This game of Yahtzee relies on the injection of a Turn Mediator (Table \ref{tab:turnBasedMechanism}) implementation, responsible for arbitrating the order in which each game is played. The arbitration occurs during the iteration through the rounds, executing the round as appropriate.
 
-The client application is a thin client, with little more than the definition of a connection protocol (Table \ref{tab:connectionProtocol}) , disconnection protocol (Table \ref{tab:disconnectionProtocol}) and input trigger protocol (Table: \ref{tab:inputProtocol}), documented through a shared library component model \it{ConnectionProtocol}.
+The client application is a thin client, with little more than the definition of a connection protocol (Table \ref{tab:connectionProtocol}) , disconnection protocol (Table \ref{tab:disconnectionProtocol}) and input trigger protocol (Table: \ref{tab:inputProtocol}), documented through a shared library component model \textit{Connection Protocol}.
 
 \begin{table}[H]
 	\centering
@@ -89,7 +89,7 @@ The client application is a thin client, with little more than the definition of
 	\label{tab:turnBasedMechanism}
 \end{table}
 
-Communication between sessions is performed over the injected event bus, allowing players and the lobby to coordinate in a decoupled manner over actions. The event bus is an extension of the listener design pattern, allowing a publish-subscribe approach to communication between multiple threads. 
+Communication between sessions is performed over the injected event bus, allowing players and the lobby to publish messages a decoupled manner based on their actions. The event bus is an extension of the listener design pattern, allowing a publish-subscribe approach to communication between multiple threads. 
 
 This intra-player, intra-thread model coordination is defined by sharing an Application Programming Interface package. 
 

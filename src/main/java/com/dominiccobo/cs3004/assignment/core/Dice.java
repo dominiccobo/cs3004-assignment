@@ -6,7 +6,6 @@ import java.util.*;
  * Generic dice rolling code ..
  *
  * @author Dominic Cobo (contact@dominiccobo.com)
- * @author Simon Taylor (some networking lecturer at brunel)
  */
 public class Dice {
 

@@ -55,6 +55,7 @@ public class Yahtzee implements SessionInstance, Runnable {
 
     @SuppressWarnings("WeakerAccess")
     public void playGame() {
+        LOG.info("Starting player game");
         requestPlayerNameDetails();
         final String banner = readBanner();
         ioStreams.println(banner);
@@ -64,6 +65,7 @@ public class Yahtzee implements SessionInstance, Runnable {
             if(turnMediator.hasTurn(this)) {
                 turnMediator.lockTurn(this);
                 Round roundToPlay = this.next();
+                LOG.info("[{}] Playing round {}/{}", playerName, currentRoundNo, NUMBER_OF_ROUNDS);
                 scoreBoard = roundToPlay.play();
                 turnMediator.releaseTurn(this);
             }
@@ -106,7 +108,9 @@ public class Yahtzee implements SessionInstance, Runnable {
     }
 
     void requestPlayerNameDetails() {
+        LOG.trace("Requesting player details");
         this.playerName = ioStreams.readConsoleInput("Choose a name: ");
+        LOG.trace("Player provided name {}", playerName);
         eventBus.post(new PlayerReadyEvent(playerName, getIdentifier()));
     }
 }

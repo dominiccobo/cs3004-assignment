@@ -1,0 +1,16 @@
+\subsection{Requirement 5 - A minimum of three players must be allowed to play} 
+
+\subsubsection{Expectation} 
+Definition of maximum players, count of players joined and restriction of new joiners.
+
+\subsubsection{Implementation}
+
+\begin{description}
+	\item[c.d.c.a.multiplayer.Lobby] Implements the \textit{LobbyLifecycleEvents} interface which defines the expected events within a Lobby. Defines a constant establishing the maximum number of players. 
+	
+	Understands number of players connected by keeping track of these set and the players connected by keeping a map of their identifier and their name; this approach is highly susceptible to a race condition and should most likely implement double validating logic to ensure that on connection 1 can connect a time. 
+\end{description}
+
+\subsubsection{Demonstrating log output} 
+
+No logs.

@@ -1,0 +1,19 @@
+\subsection{Requirement 4 - Player scores and winners must be shared on finishing} 
+
+\subsubsection{Expectation} 
+Presence of logic to understand when each player is finished, when all players are finished and their associated scores.
+
+\subsubsection{Implementation}
+
+\begin{description}
+	\item[c.d.c.a.multiplayer.Lobby] Collects an understanding on which players finish, their scoreboard and ultimately when all finish publishes their so the winners can be calculated and shared using the \textit{GameFinishedEvent}.
+	
+	\item[c.d.c.a.core.Player] Publishes when a player has finished all their rounds and listens for when the game is finished, calculating each score and sending it over the connected input and output streams.
+	
+\end{description} 
+
+\subsubsection{Demonstrating log output} 
+
+\lstinputlisting[caption={Log output for Requirement 4 - Server Log}, captionpos=b,  showstringspaces=false]{logs/requirement4-server.txt}
+
+\lstinputlisting[caption={Log output for Requirement 4 - Player 1 Log}, captionpos=b,  showstringspaces=false]{logs/requirement4-player1.txt} 

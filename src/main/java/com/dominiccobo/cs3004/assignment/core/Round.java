@@ -53,6 +53,11 @@ class Round {
         String prompt = selection.generateScoreChoicePrompt();
         ioStreams.println(prompt);
 
+        if(!selection.isAnyScoringOptionAvailable()) {
+            ioStreams.println("No scoring options available. Next round.");
+            return;
+        }
+
         boolean inputValid = false;
         do {
             int choice = ioStreams.readIntegerConsoleInput("Choose one choice!");

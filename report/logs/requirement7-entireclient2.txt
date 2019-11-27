@@ -1,0 +1,118 @@
+Connected to the target VM, address: '127.0.0.1:53334', transport: 'socket'
+2019-11-27 18:08:21.946  INFO [           main] c.d.c.a.c.Client                         : Connecting to server localhost:50000
+2019-11-27 18:08:22.012  INFO [           main] c.d.c.a.c.Client                         : Successfully connected to localhost:50000
+[INPUT]Choose a name:
+player2
+2019-11-27 18:08:31.821 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: player2
+[GLOBAL] player1 has joined the game.
+[GLOBAL] player2 has joined the game.
+__  __      __    __
+\ \/ /___ _/ /_  / /_____  ___  ___
+ \  / __ `/ __ \/ __/_  / / _ \/ _ \
+ / / /_/ / / / / /_  / /_/  __/  __/
+/_/\__,_/_/ /_/\__/ /___/\___/\___/
+
+Welcome player2
+[GLOBAL] player3 has joined the game.
+
+
+Round 1 of 13
+Current score is 0
+Your current scoring status is:
+You rolled: 1	6	3	4	1
+3 chances to re roll.
+[INPUT]How many dice do you want to re roll? (1-5 - 0 for no dice)
+0
+2019-11-27 18:10:10.119 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: 0
+With your roll you can select:
+6 for Chance scoring 15 points
+7 for Ones scoring 2 points
+9 for Threes scoring 3 points
+10 for Fours scoring 4 points
+12 for Sixes scoring 6 points
+
+[INPUT]Choose one choice!
+12
+2019-11-27 18:10:16.544 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: 12
+You have chosen 12
+
+..... redacted for brevity ....
+
+
+Round 12 of 13
+Current score is 137
+Your current scoring status is:
+You rolled: 5	4	2	5	6
+3 chances to re roll.
+[INPUT]How many dice do you want to re roll? (1-5 - 0 for no dice)
+0
+2019-11-27 18:13:39.614 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: 0
+With your roll you can select:
+
+No scoring options available. Next round.
+
+
+Round 13 of 13
+Current score is 137
+Your current scoring status is:
+You rolled: 2	2	4	1	2
+3 chances to re roll.
+[INPUT]How many dice do you want to re roll? (1-5 - 0 for no dice)
+0
+2019-11-27 18:13:56.583 DEBUG [           main] c.d.c.a.c.Client                         : Client input was: 0
+[GLOBAL] player1 has finished playing their game.
+With your roll you can select:
+
+No scoring options available. Next round.
+[GLOBAL] player2 has finished playing their game.
+[GLOBAL] player3 has finished playing their game.
+ Player player1 [Score: 129]:
+	Current Score
+Option				Score
+Short Straight			30
+Triple					16
+Long Straight			40
+Chance					15
+Ones					2
+Twos					2
+Threes					3
+Fours					4
+Fives					5
+Sixes					12
+
+
+ Player player2 [Score: 137]:
+	Current Score
+Option				Score
+Short Straight			30
+Triple					17
+Long Straight			40
+Chance					20
+Ones					1
+Twos					2
+Threes					3
+Fours					8
+Fives					10
+Sixes					6
+
+
+[TOP-SCORE] Player player3 [Score: 170]:
+	Current Score
+Option				Score
+Short Straight			30
+Triple					14
+Long Straight			40
+Full House					25
+Chance					23
+Ones					1
+Twos					2
+Threes					9
+Fours					4
+Fives					10
+Sixes					12
+
+
+2019-11-27 18:14:19.489  INFO [           main] c.d.c.a.c.Client                         : Disconnecting from server.
+Disconnected from the target VM, address: '127.0.0.1:53334', transport: 'socket'
+
+Process finished with exit code 0

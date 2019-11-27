@@ -1,0 +1,24 @@
+\subsection{Requirement 1 - Must follow client server approach} 
+		
+\subsubsection{Expectation} 
+The presence of a separated application entry point for the Client and Server. 
+
+\subsubsection{Implementation}
+
+{\begin{description}
+	\item [com.dominiccobo.cs3004.assignment.client.Client] Client side code implementation provides connectivity and basic protocol understanding for connectivity to Server which houses game logic. 
+	
+	\item [com.dominiccobo.cs3004.assignment.multiplayer.Lobby] Serves as the entry point and centre-point for handling of all connected clients, setting up an instance of a game for each connection while places are available and ultimately starting the game when everyone has joined and is ready.
+
+\end{description}} 
+
+\subsubsection{Demonstrating log output} 
+
+\lstinputlisting[caption={Log output for Requirement 1 - Server log}, captionpos=b, language={}, showstringspaces=false]{logs/requirement1-server.txt}
+
+
+\lstinputlisting[caption={Log output for Requirement 1 - Player 1 log},captionpos=b, showstringspaces=false]{logs/requirement1-player1.txt} 
+
+\lstinputlisting[caption={Log output for Requirement 1 - Player 2 log},captionpos=b, showstringspaces=false]{logs/requirement1-player2.txt} 
+
+\lstinputlisting[caption={Log output for Requirement 1 - Player 3 log}, captionpos=b, showstringspaces=false]{logs/requirement1-player3.txt} 

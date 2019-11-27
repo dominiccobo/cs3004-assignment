@@ -1,0 +1,20 @@
+2019-11-27 18:13:50.566  INFO [       Thread-1] a.m.OrderlyQueuedMultiPlayerTurnMediator : Player de287504-69fd-46c4-bd9a-07e7d8089181 has locked their turn.
+2019-11-27 18:13:50.567  INFO [       Thread-1] c.d.c.a.c.Yahtzee                        : [player1] Playing round 13/13
+2019-11-27 18:13:53.231 DEBUG [       Thread-1] c.d.c.a.c.InputOutputStreams             : Received input: 0
+2019-11-27 18:13:53.231  INFO [       Thread-1] a.m.OrderlyQueuedMultiPlayerTurnMediator : Player de287504-69fd-46c4-bd9a-07e7d8089181 has released their turn.
+2019-11-27 18:13:53.231  INFO [       Thread-3] a.m.OrderlyQueuedMultiPlayerTurnMediator : Player ada98ed5-ea1b-4335-8d30-6470ac6de765 has locked their turn.
+2019-11-27 18:13:53.231  INFO [       Thread-3] c.d.c.a.c.Yahtzee                        : [player2] Playing round 13/13
+2019-11-27 18:13:53.231  INFO [       Thread-1] c.d.c.a.m.Lobby                          : player1 has finished their game.
+2019-11-27 18:13:56.583 DEBUG [       Thread-3] c.d.c.a.c.InputOutputStreams             : Received input: 0
+2019-11-27 18:13:56.584  INFO [       Thread-3] a.m.OrderlyQueuedMultiPlayerTurnMediator : Player ada98ed5-ea1b-4335-8d30-6470ac6de765 has released their turn.
+2019-11-27 18:13:56.584  INFO [       Thread-3] c.d.c.a.m.Lobby                          : player2 has finished their game.
+2019-11-27 18:13:56.585  INFO [       Thread-5] a.m.OrderlyQueuedMultiPlayerTurnMediator : Player f313769c-6d67-4509-b3c1-f85b4246bbb3 has locked their turn.
+2019-11-27 18:13:56.585  INFO [       Thread-5] c.d.c.a.c.Yahtzee                        : [player3] Playing round 13/13
+2019-11-27 18:14:06.199 DEBUG [       Thread-5] c.d.c.a.c.InputOutputStreams             : Received input: 3
+2019-11-27 18:14:09.607 DEBUG [       Thread-5] c.d.c.a.c.InputOutputStreams             : Received input: 1
+2019-11-27 18:14:10.730 DEBUG [       Thread-5] c.d.c.a.c.InputOutputStreams             : Received input: 2
+2019-11-27 18:14:13.863 DEBUG [       Thread-5] c.d.c.a.c.InputOutputStreams             : Received input: 4
+2019-11-27 18:14:15.456 DEBUG [       Thread-5] c.d.c.a.c.InputOutputStreams             : Received input: 0
+2019-11-27 18:14:15.456  INFO [       Thread-5] a.m.OrderlyQueuedMultiPlayerTurnMediator : Player f313769c-6d67-4509-b3c1-f85b4246bbb3 has released their turn.
+2019-11-27 18:14:15.456  INFO [       Thread-5] c.d.c.a.m.Lobby                          : player3 has finished their game.
+2019-11-27 18:14:19.459  INFO [       Thread-5] c.d.c.a.m.Lobby                          : Game finished. Sending scores to all.
