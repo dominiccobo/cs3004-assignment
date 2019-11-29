@@ -6,11 +6,11 @@ The definition of a termination protocol whereby clients understand when there i
 \subsubsection{Implementation}
 
 \begin{description}
-	\item[c.d.c.a.api.ConnectionProtocol] description
+	\item[c.d.c.a.api.ConnectionProtocol] Contains the definitions of the constants which can be appended to a message to determine the action required by the client. This implementation permits for connection termination and input request from the client.
 	
-	\item[c.d.c.a.core.Player] description
+	\item[c.d.c.a.core.Player] Acts upon the event received denoting the game is finished and forwards the connection termination string down the player's connection stream.
 	
-	\item[c.d.c.a.multiplayer.Lobby] description 
+	\item[c.d.c.a.multiplayer.Lobby] Terminates the game once all players are disconnected by changing the state. The current approach is susceptible to a race condition which in some times can lead to the pre-emptive termination of still existing connections. 
 \end{description}
 
 \subsubsection{Demonstrating log output} 

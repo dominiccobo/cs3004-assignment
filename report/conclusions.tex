@@ -1,3 +1,11 @@
-\section{Conclusions}
+\section{Discussion \& Conclusion}
 
-In conclusion, this report demonstrates a working mutli-client to server application implementing the Yahtzee dice game. It also demonstrates how the practice of good Object Oriented discipline can facilitate the distribution of systems.
+This report demonstrates a working multi-client single-server application implementing the Yahtzee dice game and the transformative approach that led towards it. Further to this it demonstrates how the correct practice of Object Oriented discipline can facilitate the distribution of systems.
+
+The resulting implementation in itself is very raw and could likely benefit from various improvements, many of which discussed in the design and implementation. 
+
+The addition of an intermediate Message Queue for each player session, where messages are enqueued before and then dequeued over the appropriate connection streams, would improve testability and enable messages to still be sent and received when a player is disconnected from a player session.
+
+Rather than sending an embedded string to orchestrate the disconnection and input protocol between the client and the server, this could be formalised through the use of XML, JSON or equivalent with a clear schema. 
+
+Each player round should theoretically be treated as a transactional object, enabling the system to abide more by the ACID principles. 
