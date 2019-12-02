@@ -1,9 +1,9 @@
 \section{Design \& Implementation}
 \subsection{Precursory Refactoring}
 
-In order to provide a more clearer overview of the potential approaches to distributing the game, the provided single player code was refactored through the use of the Strangler Pattern \parencite{strangler2004}. This resulted in a clearer separation of the game logic into a clear structure. This approach also permitted the introduction of a test-suite that serve to guarantee the functionality as the application evolved into its distributed form.
+In order to provide a more clearer overview of the potential approaches to distributing the game, the provided single player code was refactored through the use of the Strangler Pattern \parencite{strangler2004}. This resulted in a separation of the game logic into a clearer structure. This approach also permitted the introduction of a test-suite that serve to guarantee the functionality as the application evolved into its distributed form.
 
-This evolution allowed the creation of three key models: 
+This evolution allowed the elicitation of three key domain concepts:
 
 \begin{description}
 	\item [Yahtzee]  Represents the entry point to a game of Yahtzee and the iteration aspect through the rounds until the completion of the game.
@@ -11,11 +11,11 @@ This evolution allowed the creation of three key models:
 	\item [Scoreboard] Represents a facade for the compound logic behind how scoring options are handled, aggregated and scored.
 \end{description}
 
-\subsection{Overview of Client-Server Architecture}
+\subsection{Overview of Client-Server Architecture and Protocols}
 
-As with all client-server style applications, the server must first be started so that it can accept incoming connections from clients. Table \ref{tab:connectionProtocol} describes the connection protocol.
+As with all client-server style applications, the server must first be started so that it can accept incoming connections from clients. Table \ref{tab:connectionProtocol} describes this connection protocol.
 
-The life-cycle of a server instance and its players is defined as a Lobby. 
+The life-cycle of a server instance and its players is defined as a Lobby, a notion introduced in popular distributed game design.
 
 \begin{table}[H]
 	\centering
@@ -49,7 +49,7 @@ The life-cycle of a server instance and its players is defined as a Lobby.
 	\label{tab:connectionProtocol}
 \end{table}
 
-Every new connection results in a player session consisting of an input and output stream. A session is defined as a live connection. Each session has an associated session state \parencite[page~456]{fowler2012patterns}: a game of Yahtzee. Each of these occupies a separate thread.
+Every new connection results in a player session consisting of an input and output stream. Sessions are defined as a live connections. Each session has an associated session state \parencite[page~456]{fowler2012patterns}: in this case, a game of Yahtzee. Each of these occupies a separate thread.
 
 This effectively means that a player game session can survive independently of a connection being disconnected, allowing for the resumption of a game say if a client disconnection occurred through the simple implementation of a session identifier. \parencite[page~456]{fowler2012patterns}
 
@@ -58,6 +58,10 @@ On the acceptance of each connection and successive creation each player by the 
 This game of Yahtzee relies on the injection of a Turn Mediator \parencite{gamma1994design} (Table \ref{tab:turnBasedMechanism}) implementation, responsible for arbitrating the order in which each game is played. The pessimistic concurrency \parencite[page~67]{fowler2012patterns} arbitration occurs during the iteration through the rounds, executing and restraining the execution of the round as appropriate.
 
 The client application is a thin client, with little more than the definition of a connection protocol (Table \ref{tab:connectionProtocol}) , disconnection protocol (Table \ref{tab:disconnectionProtocol}) and input trigger protocol (Table: \ref{tab:inputProtocol}), documented through a shared library component model \textit{Connection Protocol}.
+
+The rationale behind a thin, non-intelligent client lays in the easier ability to centralise logic and maintain concurrency with offline concurrency controls being far more error-prone than their online alternatives.
+
+Statelessness is also a key attribute of this thin-client design, where through disconnection of a single client, the state is not lost as there was no state held by it at any point.
 
 \begin{table}[H]
 	\centering
@@ -89,7 +93,7 @@ The client application is a thin client, with little more than the definition of
 	\label{tab:turnBasedMechanism}
 \end{table}
 
-Communication between sessions is performed over the injected event bus, allowing players and the lobby to publish messages a decoupled manner based on their actions. The event bus is an extension of the listener design pattern \parencite{gamma1994design}, allowing a publish-subscribe approach to communication between multiple threads. 
+Communication between sessions is performed over the injected event bus dependency, allowing players and the lobby to publish messages a decoupled manner based on their actions. The event bus is an extension of the listener design pattern \parencite{gamma1994design}, allowing a publish-subscribe approach to communication between multiple threads. 
 
 All event payloads are shared immutably, preventing change to cross-thread data being modified and thus any form of inconsistency. All definitions of events alongside the Connection Protocol are defined in as part of an API package.
 
